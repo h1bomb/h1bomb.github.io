@@ -3,13 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>uupup！</title>
+  <title>uupup！ › JavaScript的继承之二</title>
   <meta name="author" content="H1bomb">
+  
+  <meta name="description" content="继续上一篇的话题继承，这里主要讲下实际开发的运用。
+冒充方式：
+1234567891011121314151617181920212223242526272829303132function ClassA(sColor) {    this.color = sColor;    this.sayCo">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  
+  <meta property="og:title" content="JavaScript的继承之二"/>
   <meta property="og:site_name" content="uupup！"/>
 
   
@@ -49,13 +53,12 @@
 <div class="clearfix"></div>
 </header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper">
-  <article class="post">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
   <div class="post-content">
     <header>
       
   
-    <h1 class="title"><a href="/2015/05/20/JavaScript-inheritance2/">JavaScript的继承之二</a></h1>
+    <h1 class="title">JavaScript的继承之二</h1>
   
 
       
@@ -93,129 +96,38 @@
       
     </div>
     
+    <footer>
+      <div class="alignleft">
       
+      
+      </div>
+      <div class="clearfix"></div>
+    </footer>
     
   </div>
 </article>
 
 
-
-
-  <article class="post">
-  <div class="post-content">
-    <header>
+<section id="comment">
+  
+            <!-- Duoshuo Comment BEGIN -->
+            <div class="ds-thread"></div>
+            <script type="text/javascript">
+                var duoshuoQuery = {short_name:"uupup"};
+                (function() {
+                    var ds = document.createElement('script');
+                    ds.type = 'text/javascript';ds.async = true;
+                    ds.src = 'http://static.duoshuo.com/embed.js';
+                    ds.charset = 'UTF-8';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                })();
+            </script>
+            <!-- Duoshuo Comment END -->
       
   
-    <h1 class="title"><a href="/2015/05/20/JavaScript-inheritance/">JavaScript的继承</a></h1>
-  
+</section>
 
-      
-      <time datetime="2015-05-20T00:47:31.000Z">May 20 2015</time>
-      
-    </header>
-    <div class="entry">
-      
-        <p>很多时候，大家都认为JavaScript是面向对象的编程语言，的确是，但是和Java，C++等的编程语言右不相同的OO做法。<br>在<a href="http://h1bomb.github.io/2015/05/19/JavaScript-prototype/" target="_blank" rel="external">JavaScript 原型</a>一文中已经说明了JavaScript的原型原理。<br>JavaScript里面的OO大部分是基于原型来实现的。</p>
-<p>上代码：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Cat</span><span class="params">()</span> </span>{</div><div class="line">	<span class="keyword">this</span>.name = <span class="string">'Tom'</span>;</div><div class="line">	<span class="keyword">this</span>.sex = <span class="string">'male'</span>;</div><div class="line">}</div><div class="line"></div><div class="line">Cat.prototype = { className: <span class="string">'cat'</span> };</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">WhiteCat</span><span class="params">()</span> </span>{</div><div class="line">	<span class="keyword">this</span>.color = <span class="string">'white'</span>;</div><div class="line">}</div><div class="line"></div><div class="line">WhiteCat.prototype = <span class="keyword">new</span> Cat();</div><div class="line"></div><div class="line"><span class="keyword">var</span> cat = <span class="keyword">new</span> Cat();</div><div class="line"><span class="keyword">var</span> whiteCat = <span class="keyword">new</span> WhiteCat();</div><div class="line"><span class="built_in">console</span>.log(cat.name);</div><div class="line"><span class="built_in">console</span>.log(cat.sex);</div><div class="line"><span class="built_in">console</span>.log(cat.className);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(whiteCat.name);</div><div class="line"><span class="built_in">console</span>.log(whiteCat.sex);</div><div class="line"><span class="built_in">console</span>.log(whiteCat.className);</div><div class="line"><span class="built_in">console</span>.log(whiteCat.color);</div></pre></td></tr></table></figure>
-
-<p>通过原型链，实现对象与对象之间的信息共享，继而实现了继承。这是一种简洁，灵活的方案，下面我们具体看下在实际开发过程中如何运用。</p>
-
-      
-    </div>
-    
-      
-    
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  <div class="post-content">
-    <header>
-      
-  
-    <h1 class="title"><a href="/2015/05/19/JavaScript-prototype/">JavaScript 原型</a></h1>
-  
-
-      
-      <time datetime="2015-05-18T16:32:12.000Z">May 19 2015</time>
-      
-    </header>
-    <div class="entry">
-      
-        <p>Javascript 里面的一些内建的基础类型,如 Object，Array，Number,Date,String,RegExp<br>都是基于函数创建的，在Js的世界里，我们把这种函数叫构造函数。<br>但也有例外，如Math，只是一个对象，它的<code>__proto__</code>是<code>Object</code>。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype)</div><div class="line"><span class="comment">//chrome: Object {}</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.__proto__);</div><div class="line"><span class="comment">//chrome: function Empty(){}</span></div></pre></td></tr></table></figure>
-
-<h2 id="__proto___和prototype_分别是什么呢，是不是和原型有关？"><code>__proto__</code> 和<code>prototype</code> 分别是什么呢，是不是和原型有关？</h2>
-<ul>
-<li><code>__proto__</code>可以理解为原型的引用或指针</li>
-<li><code>prototype</code>可以理解为原型对象</li>
-</ul>
-<p>举个例子</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> someone = {</div><div class="line">	name:<span class="string">'alex'</span>,</div><div class="line">	sex:<span class="string">'male'</span>,</div><div class="line">	job:<span class="string">'happy coder'</span></div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">var</span> otherOne = {</div><div class="line">	name:<span class="string">'mike'</span></div><div class="line">}</div><div class="line"></div><div class="line">otherOne.__proto__ = soameone;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(otherOne);</div></pre></td></tr></table></figure>
-
-<p>很可惜<code>__proto__</code>这个原型引用的属性不是ES6之前的标准，所以IE浏览器是不支持的。</p>
-<h2 id="那又怎么实现对象的扩展呢？">那又怎么实现对象的扩展呢？</h2>
-<p><code>prototype</code>一直是标准，那么 <code>prototype</code>又是怎么用于这个场景的呢？</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//给Object增加一个create方法，这个方法创建一个使用原对象作为其原型的新对象</span></div><div class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">Object</span>.create !== <span class="string">'function'</span>) {</div><div class="line">  <span class="built_in">Object</span>.create = <span class="function"><span class="keyword">function</span><span class="params">(o)</span> </span>{</div><div class="line">    <span class="keyword">var</span> F = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{};<span class="comment">//建立一个空的构造函数（或者理解为类）</span></div><div class="line">    F.prototype = o;<span class="comment">//通过给构造函数的原型对象进行赋值，也就是将作为参数对象赋值给空的构造函数</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> F();<span class="comment">//再实例化这个构造函数的对象</span></div><div class="line">  }</div><div class="line">}</div></pre></td></tr></table></figure>
-
-<p>在ES5的时候，已经支持原生的Object.create,如果为了兼容不支持的浏览器，可以使用以上方法。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> otherOne = <span class="built_in">Object</span>.create(someone);</div><div class="line">otherOne.name = <span class="string">'Mike'</span>;</div></pre></td></tr></table></figure>
-
-<p>一个对象的原型引用只能一个，这样就形成了一个链，我们把这个链称之为“原型链”。</p>
-<p>对象与对象之间的这个继承关系，是通过这种原型链形成的。</p>
-<h2 id="创建JS对象有三种方式：直接量创建，构造函数创建，Object-create创建">创建JS对象有三种方式：直接量创建，构造函数创建，Object.create创建</h2>
-<ol>
-<li>直接量创建最简单</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> someone = {</div><div class="line">	name:<span class="string">'alex'</span>,</div><div class="line">	sex:<span class="string">'male'</span>,</div><div class="line">	job:<span class="string">'happy coder'</span></div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">var</span> num5 = <span class="number">5</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> array = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>]</div></pre></td></tr></table></figure>
-
-<ol>
-<li>构造函数创建</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Cat</span><span class="params">()</span></span></div><div class="line">{</div><div class="line">  <span class="keyword">this</span>.name = <span class="string">'cat'</span>;</div><div class="line">  <span class="keyword">this</span>.color = <span class="string">'black'</span>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">var</span> cat = <span class="keyword">new</span> Cat();</div></pre></td></tr></table></figure>
-
-<ol>
-<li>Object.create创建<br>如上一章节的代码，不再赘述</li>
-</ol>
-<h2 id="性能">性能</h2>
-<p>在原型链上查找属性比较耗时，对性能有副作用，这在性能要求苛刻的情况下很重要。另外，试图访问不存在的属性时会遍历整个原型链。</p>
-<blockquote>
-<p><strong>注意</strong>：不好的实践：扩展原生对象的原型（除非移植较新 JavaScript 引擎的特性）</p>
-</blockquote>
-
-      
-    </div>
-    
-      
-    
-  </div>
-</article>
-
-
-
-
-
-<div class="pagination">
-  <table width='100%'>
-    <tbody>
-    <tr>
-      <td width='120' align='left'>
-        
-      </td>
-      <td width='auto' align='center'>
-          <a href="/archives/">文章归档</a>
-      </td>
-      <td width='120' align='right'>
-        
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div></div></div>
+</div></div>
     <div class="clearfix"></div>
   </div>
   <footer id="footer"><div class="inner"><div class="alignleft">
