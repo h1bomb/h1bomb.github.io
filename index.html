@@ -55,6 +55,37 @@
     <header>
       
   
+    <h1 class="title"><a href="/2015/05/20/JavaScript-inheritance/">JavaScript的继承</a></h1>
+  
+
+      
+      <time datetime="2015-05-20T00:47:31.000Z">May 20 2015</time>
+      
+    </header>
+    <div class="entry">
+      
+        <p>很多时候，大家都认为JavaScript是面向对象的编程语言，的确是，但是和Java，C++等的编程语言右不相同的OO做法。<br>在<a href="http://h1bomb.github.io/2015/05/19/JavaScript-prototype/" target="_blank" rel="external">JavaScript 原型</a>一文中已经说明了JavaScript的原型原理。<br>JavaScript里面的OO大部分是基于原型来实现的。</p>
+<p>上代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Cat</span><span class="params">()</span> </span>{</div><div class="line">	<span class="keyword">this</span>.name = <span class="string">'Tom'</span>;</div><div class="line">	<span class="keyword">this</span>.sex = <span class="string">'male'</span>;</div><div class="line">}</div><div class="line"></div><div class="line">Cat.prototype = { className: <span class="string">'cat'</span> };</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">WhiteCat</span><span class="params">()</span> </span>{</div><div class="line">	<span class="keyword">this</span>.color = <span class="string">'white'</span>;</div><div class="line">}</div><div class="line"></div><div class="line">WhiteCat.prototype = <span class="keyword">new</span> Cat();</div><div class="line"></div><div class="line"><span class="keyword">var</span> cat = <span class="keyword">new</span> Cat();</div><div class="line"><span class="keyword">var</span> whiteCat = <span class="keyword">new</span> WhiteCat();</div><div class="line"><span class="built_in">console</span>.log(cat.name);</div><div class="line"><span class="built_in">console</span>.log(cat.sex);</div><div class="line"><span class="built_in">console</span>.log(cat.className);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(whiteCat.name);</div><div class="line"><span class="built_in">console</span>.log(whiteCat.sex);</div><div class="line"><span class="built_in">console</span>.log(whiteCat.className);</div><div class="line"><span class="built_in">console</span>.log(whiteCat.color);</div></pre></td></tr></table></figure>
+
+<p>通过原型链，实现对象与对象之间的信息共享，继而实现了继承。这是一种简洁，灵活的方案，下面我们具体看下在实际开发过程中如何运用。</p>
+
+      
+    </div>
+    
+      
+    
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  <div class="post-content">
+    <header>
+      
+  
     <h1 class="title"><a href="/2015/05/19/JavaScript-prototype/">JavaScript 原型</a></h1>
   
 
