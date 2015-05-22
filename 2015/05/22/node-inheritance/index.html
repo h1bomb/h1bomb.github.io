@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>uupup！ › nodejs继承实现</title>
+  <meta name="author" content="H1bomb">
+  
+  <meta name="description" content="直接上代码/lib/util.js
+第634行
+1234567891011exports.inherits = function(ctor, superCtor) {  ctor.super_ = superCtor;  ctor.prototype = Object.create(superCto">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="nodejs继承实现"/>
+  <meta property="og:site_name" content="uupup！"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="uupup！" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-63097959-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header"><div class="meta inner">
+  <h1><a href="/">uupup！</a></h1>
+  <h2><a href="/"></a></h2>
+  <nav id="main-nav">
+    <ul>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+</div>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  <div class="post-content">
+    <header>
+      
+  
+    <h1 class="title">nodejs继承实现</h1>
+  
+
+      
+      <time datetime="2015-05-22T04:46:03.000Z">May 22 2015</time>
+      
+    </header>
+    <div class="entry">
+      
+        <p>直接上代码<a href="https://github.com/joyent/node/blob/master/lib/util.js" target="_blank" rel="external">/lib/util.js</a></p>
+<p>第634行</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">exports.inherits = <span class="function"><span class="keyword">function</span><span class="params">(ctor, superCtor)</span> </span>{</div><div class="line">  ctor.super_ = superCtor;</div><div class="line">  ctor.prototype = <span class="built_in">Object</span>.create(superCtor.prototype, {</div><div class="line">    constructor: {</div><div class="line">      value: ctor,</div><div class="line">      enumerable: <span class="literal">false</span>,</div><div class="line">      writable: <span class="literal">true</span>,</div><div class="line">      configurable: <span class="literal">true</span></div><div class="line">    }</div><div class="line">  });</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>从源码看也是使用原型的方式实现了继承，不过在<code>ctor.super_ = superCtor;</code>里面设置了一个<code>super_</code>的属性指向<br>被继承的构造函数,同时在继承超级构造的原型附加了一些构造的成员属性而创建的对象。</p>
+<p>至于constructor里面的这些属性，我目前只能猜猜是用于继承追溯或者构造函数的属性声明。<br>后面详细研究了node的util其他代码或许会有一个明确的答案。</p>
+
+      
+    </div>
+    
+    <footer>
+      <div class="alignleft">
+      
+      
+      </div>
+      <div class="clearfix"></div>
+    </footer>
+    
+  </div>
+</article>
+
+
+<section id="comment">
+  
+            <!-- Duoshuo Comment BEGIN -->
+            <div class="ds-thread"></div>
+            <script type="text/javascript">
+                var duoshuoQuery = {short_name:"uupup"};
+                (function() {
+                    var ds = document.createElement('script');
+                    ds.type = 'text/javascript';ds.async = true;
+                    ds.src = 'http://static.duoshuo.com/embed.js';
+                    ds.charset = 'UTF-8';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                })();
+            </script>
+            <!-- Duoshuo Comment END -->
+      
+  
+</section>
+
+</div></div>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer"><div class="inner"><div class="alignleft">
+  <p>
+  
+    &copy; 2015 H1bomb
+  
+  </p>
+  <p>
+    <a href="http://github.com/willerce/hexo-theme-noderce">Noderce</a> Theme By <a href="http://willerce.com" >willerce</a>
+  </p>
+
+</div>
+<div class="clearfix"></div></div></footer>
+  <script type="text/javascript">
+
+</script>
+
+</body>
+</html>
