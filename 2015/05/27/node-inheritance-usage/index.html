@@ -61,7 +61,7 @@
   
 
       
-      <time datetime="2015-05-27T02:18:29.000Z">May 27 2015</time>
+      <time datetime="2015-05-27T02:28:26.000Z">May 27 2015</time>
       
     </header>
     <div class="entry">
@@ -79,6 +79,11 @@
 <p>与属性相关的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。默认为 undefined。</p>
 <p><strong>writable</strong></p>
 <p>true 当且仅当可能用 赋值运算符 改变与属性相关的值。默认为 false。</p>
+</blockquote>
+<p>另外,<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/create" target="_blank" rel="external">Object.create</a>也有说明，create方法的第二个参数的说明：</p>
+<blockquote>
+<p><strong>propertiesObject</strong></p>
+<p>一个对象值，可以包含若干个属性，属性名为新建对象的属性名，属性值为那个属性的属性描述符对象.</p>
 </blockquote>
 <p>第一次接触node继承，是在使用<code>events.EventEmitter</code>时接触的。<br>代码如下：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> util = <span class="built_in">require</span>(<span class="string">"util"</span>);  </div><div class="line"><span class="keyword">var</span> events = <span class="built_in">require</span>(<span class="string">"events"</span>);<span class="comment">//EventEmitter通过events模块来访问  </span></div><div class="line">  </div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyStream</span><span class="params">()</span> </span>{<span class="comment">//新建一个类  </span></div><div class="line">    events.EventEmitter.call(<span class="keyword">this</span>);  </div><div class="line">}  </div><div class="line">  </div><div class="line">util.inherits(MyStream, events.EventEmitter);</div></pre></td></tr></table></figure>
