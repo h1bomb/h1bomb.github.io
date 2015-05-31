@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>uupup！ › 关于Javascript继承在es5到es6改变</title>
+  <meta name="author" content="H1bomb">
+  
+  <meta name="description" content="再重温下之前继承的实现：
+123456789101112131415161718192021222324252627282930313233var inherits = function(ctor, superCtor) {  ctor.super_ = superCtor;  ctor.proto">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="关于Javascript继承在es5到es6改变"/>
+  <meta property="og:site_name" content="uupup！"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="uupup！" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-63097959-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header"><div class="meta inner">
+  <h1><a href="/">uupup！</a></h1>
+  <h2><a href="/"></a></h2>
+  <nav id="main-nav">
+    <ul>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+</div>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  <div class="post-content">
+    <header>
+      
+  
+    <h1 class="title">关于Javascript继承在es5到es6改变</h1>
+  
+
+      
+      <time datetime="2015-05-31T15:02:18.000Z">May 31 2015</time>
+      
+    </header>
+    <div class="entry">
+      
+        <p>再重温下之前继承的实现：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> inherits = <span class="function"><span class="keyword">function</span><span class="params">(ctor, superCtor)</span> </span>{</div><div class="line">  ctor.super_ = superCtor;</div><div class="line">  ctor.prototype = <span class="built_in">Object</span>.create(superCtor.prototype, {</div><div class="line">    constructor: {</div><div class="line">      value: ctor,</div><div class="line">      enumerable: <span class="literal">false</span>,</div><div class="line">      writable: <span class="literal">true</span>,</div><div class="line">      configurable: <span class="literal">true</span></div><div class="line">    }</div><div class="line">  });</div><div class="line">};</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Point</span><span class="params">(x, y)</span> </span>{</div><div class="line">  <span class="keyword">this</span>.x = x;</div><div class="line">  <span class="keyword">this</span>.y = y;</div><div class="line">}</div><div class="line"></div><div class="line">Point.prototype.toString = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">  <span class="keyword">return</span> <span class="string">'('</span> + <span class="keyword">this</span>.x + <span class="string">', '</span> + <span class="keyword">this</span>.y + <span class="string">')'</span>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">ColorPoint</span><span class="params">(x, y, color)</span> </span>{</div><div class="line"></div><div class="line">  Point.call(<span class="keyword">this</span>, x, y); </div><div class="line">  <span class="keyword">this</span>.color = color;</div><div class="line">}</div><div class="line"></div><div class="line">inherits(ColorPoint, Point);</div><div class="line"></div><div class="line">ColorPoint.prototype.toString = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.color + <span class="string">' '</span> + ColorPoint.super_.prototype.toString.call(<span class="keyword">this</span>); </div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>然而es6则可以这么写</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Point {</div><div class="line"></div><div class="line">  constructor(x, y) {</div><div class="line">    <span class="keyword">this</span>.x = x;</div><div class="line">    <span class="keyword">this</span>.y = y;</div><div class="line">  }</div><div class="line"></div><div class="line">  toString() {</div><div class="line">    <span class="keyword">return</span> <span class="string">'('</span> + <span class="keyword">this</span>.x + <span class="string">', '</span> + <span class="keyword">this</span>.y + <span class="string">')'</span>;</div><div class="line">  }</div><div class="line"></div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">class</span> ColorPoint extends Point {</div><div class="line"></div><div class="line">  constructor(x, y, color) {</div><div class="line">    super(x, y); </div><div class="line">    <span class="keyword">this</span>.color = color;</div><div class="line">  }</div><div class="line"></div><div class="line">  toString() {</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.color + <span class="string">' '</span> + super.toString(); </div><div class="line">  }</div><div class="line"></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>显然es6的写法更加清晰，隐去了Javascript硬去使用prototype和call的实现细节。但是es6并没有完全按照Java ,C++面向对象的语法来实现，<br>只是对于原型继承的一个语法糖。</p>
+
+      
+    </div>
+    
+    <footer>
+      <div class="alignleft">
+      
+      
+      </div>
+      <div class="clearfix"></div>
+    </footer>
+    
+  </div>
+</article>
+
+
+<section id="comment">
+  
+            <!-- Duoshuo Comment BEGIN -->
+            <div class="ds-thread"></div>
+            <script type="text/javascript">
+                var duoshuoQuery = {short_name:"uupup"};
+                (function() {
+                    var ds = document.createElement('script');
+                    ds.type = 'text/javascript';ds.async = true;
+                    ds.src = 'http://static.duoshuo.com/embed.js';
+                    ds.charset = 'UTF-8';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                })();
+            </script>
+            <!-- Duoshuo Comment END -->
+      
+  
+</section>
+
+</div></div>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer"><div class="inner"><div class="alignleft">
+  <p>
+  
+    &copy; 2015 H1bomb
+  
+  </p>
+  <p>
+    <a href="http://github.com/willerce/hexo-theme-noderce">Noderce</a> Theme By <a href="http://willerce.com" >willerce</a>
+  </p>
+
+</div>
+<div class="clearfix"></div></div></footer>
+  <script type="text/javascript">
+
+</script>
+
+</body>
+</html>
