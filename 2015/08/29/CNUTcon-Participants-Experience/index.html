@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>uupup！ › CNUTcon的参会体验</title>
+  <meta name="author" content="H1bomb">
+  
+  <meta name="description" content="对于容器的了解是从docker开始的（最近一些年docker还是很火的），我对于后端架构以及容器技术属于菜鸟水平，所以此次的体验分享还是注重我个人的理解和想法，大家如果觉得有些理解错误或者粗浅，请谅解。
+大体内容可以分为四类：技术前瞻（讲概念），架构体系（讲解决方案），开源项目（设计理念），工具实战">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="CNUTcon的参会体验"/>
+  <meta property="og:site_name" content="uupup！"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="uupup！" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-63097959-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header"><div class="meta inner">
+  <h1><a href="/">uupup！</a></h1>
+  <h2><a href="/"></a></h2>
+  <nav id="main-nav">
+    <ul>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+</div>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  <div class="post-content">
+    <header>
+      
+  
+    <h1 class="title">CNUTcon的参会体验</h1>
+  
+
+      
+      <time datetime="2015-08-29T11:14:48.000Z">Aug 29 2015</time>
+      
+    </header>
+    <div class="entry">
+      
+        <p>对于容器的了解是从docker开始的（最近一些年docker还是很火的），我对于后端架构以及容器技术属于菜鸟水平，所以此次的体验分享还是注重我个人的理解和想法，大家如果觉得有些理解错误或者粗浅，请谅解。</p>
+<p>大体内容可以分为四类：技术前瞻（讲概念），架构体系（讲解决方案），开源项目（设计理念），工具实战（云平台）。干货水货皆有。</p>
+<p>一开始主要是redhat的副总裁讲谈下一代的PaaS，中间也介绍了redhat的openshift，以及关于容器安全和标准的一些内容，和容器在Paas中发展重要位置和后续开发模式的转变。由于英语水平有限，所以后续还要关注ppt再研究下，总体还是属于技术前瞻和业界发展的方向性的思索。</p>
+<p>后面的CoreOS的演讲者，可能我不专心听吧，像是没有理解什么，发个Slide的<a href="https://github.com/kelseyhightower/cnutcon-2015" target="_blank" rel="external">链接</a>,貌似是一些etcd和Kubernetes的实践。</p>
+<p>接下来主要是京东和大众点评的解决方案的分享，感觉像是docker使用的兼容之前虚拟技术的结合的做法，用到了openstack，zookeeper，NATS，以及对于不了解容器方式的开发者兼容模式。使用的规模还是比较大的，同时没有用到mesos，swarm，Kubernetes用于docker的集群管理，而是自己对于docker集群的实现了管理方案。第二天的百度的分享同样自己做了很多的事情，构建自己的云架构。</p>
+<p>下午的阿里百川的分享TAE系统，给我的印象，还是比较深的，从技术方向，到架构方向，到实际解决问题，到实现思想，比较开阔和开放的，不光是对于云平台有一定的思想提升，还是对于方法论的提升。直接附上<a href="http://mp.weixin.qq.com/s?__biz=MzA4MjA0MTc4NQ==&amp;mid=209978199&amp;idx=1&amp;sn=2424de46eb7dbe50bcb2b3dd346dbfce&amp;scene=1&amp;srcid=CpLCImrAnW9055VsQGc4" target="_blank" rel="external">链接</a>,非常值得一看。</p>
+<p>后来也去听了七牛以及华为的OCT，七牛主要是分享了基于容器技术的数据处理主题，在各种系统资源的调度和解决性能瓶颈，以及利用go的并发优势，充分发挥容器在数据处理微服务的能力。华为的OCT听得比较少，只是对于OTC还是蛮兴趣的，主要用于OCI容器标准化的测试，以及业务测试，性能测试等的测试套件，该项目是开源的，一改我之前对于华为技术封闭的看法。附上<a href="https://github.com/huawei-openlab/oct" target="_blank" rel="external">链接</a>。</p>
+<p>由于公司新品节的上线缘故，需要远程支援下，所以第一天晚上的会后活动没有报名参加，因此也不知道会有什么收获，后面关注线上社区看有些什么分享。</p>
+<p>第二天，一早，google的美女工程师分享了Kubernetes的设计思想和实践，由于可能她长期在国外工作，演讲基本上50%到60%的英文和剩下的中文，给我在理解上造成了一些障碍，其中对于一些原则，还是记忆犹新，简单大于复杂，宠物VS牲口（pets vs cattle），解释下，什么是宠物和牲口，主要是对于线上的服务的思考，宠物般的服务需要呵护和更多的心智来维护保证高可用，由于维护的成本负担比较重，所以宠物般的服务不会很多，而牲口是则是一群服务，虽然很多，但是不需要给每个牲口做做细心呵护，如果出现问题，简单处理，或者直接杀掉，同样也实现了高可用。Kubernetes就是用于管理容器集群的工具，是google的omega的轻量版本，在开源社区还是比较活跃的，后面我估计也会研究下。</p>
+<p>之后去听了一个同样是做容器集群管理的mesos是apache旗下的开源项目，演讲的主题偏于实践，主要是讲如何应用该工具，同样以数人云的实践来讲。有一点的实用价值，中间和旁边的一起听的用友小哥聊了下，他说mesos比起Kubernetes来讲更具有企业实际运用价值，同时也比Kubernetes稳定些。后面有空这两个都可以对比使用下。</p>
+<p>下午听了vmware的关于 cloud native app的演讲，结合了vmware的产品讲述了开发栈和运维栈结构异同，以及基于容器的一些好的开发实践，以及对于安全和隔离的vmware的实现方案，说下周一会发布这款产品。</p>
+<p>由于定了5点的票，所以只能提前走了，走前听了，daocloud郭总的关于微服务架构演进的演讲，结合自身daocloud项目，讲述了构建微服务的开发过程和架构变迁。可能因为daocloud是创业团队，对于架构变迁都是以快速迭代，需求出发的方式，和我的想法十分对位。也讲了docker在微服务的实现起到的重要作用。其中有一点原则很有意义：如果业务的持续集成的速度和演进的复杂程度出现效率问题，才需要做服务的拆分。关于服务的粒度，也做了和SOA的对比。大体微服务粒度在于5-10个人开发的业务复杂度的粒度。其他由于时间问题，稍微听了下coreos的一个分享，双内核，轻量的Linux系统，用于部署容器的系统，也有一些基于coreos封装的工具。</p>
+<p>以上是本次参加全球容器大会的大体体验，总的感觉容器技术，百花齐放，各种实现和解决方案，同时大家对于容器技术很大期望，是未来技术变革的一个基点，但同时，还有不少不足和坑需要大家填补，如安全，隔离性，完善的集群管理，热迁移部署等。</p>
+<p>关键字：RedHat openshift vmware OCI coreOS mesos Kubernetes swarm oct omega LXC cgroup</p>
+<p>题外话</p>
+<p>每次参加技术会议，上厕所都有一个奇怪的现象，男厕所需要方便排队，而女厕所却寥寥无几。<br>妹子出现在会上，十分抢眼。</p>
+<p>其他的，后续再整理。</p>
+<p>9月29日，回南京的火车上。</p>
+
+      
+    </div>
+    
+    <footer>
+      <div class="alignleft">
+      
+      
+      </div>
+      <div class="clearfix"></div>
+    </footer>
+    
+  </div>
+</article>
+
+
+<section id="comment">
+  
+            <!-- Duoshuo Comment BEGIN -->
+            <div class="ds-thread"></div>
+            <script type="text/javascript">
+                var duoshuoQuery = {short_name:"uupup"};
+                (function() {
+                    var ds = document.createElement('script');
+                    ds.type = 'text/javascript';ds.async = true;
+                    ds.src = 'http://static.duoshuo.com/embed.js';
+                    ds.charset = 'UTF-8';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                })();
+            </script>
+            <!-- Duoshuo Comment END -->
+      
+  
+</section>
+
+</div></div>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer"><div class="inner"><div class="alignleft">
+  <p>
+  
+    &copy; 2015 H1bomb
+  
+  </p>
+  <p>
+    <a href="http://github.com/willerce/hexo-theme-noderce">Noderce</a> Theme By <a href="http://willerce.com" >willerce</a>
+  </p>
+
+</div>
+<div class="clearfix"></div></div></footer>
+  <script type="text/javascript">
+
+</script>
+
+</body>
+</html>
