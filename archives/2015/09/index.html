@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>uupup！ › archive_b</title>
+  <meta name="author" content="H1bomb">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="uupup！"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="uupup！" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-63097959-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header"><div class="meta inner">
+  <h1><a href="/">uupup！</a></h1>
+  <h2><a href="/"></a></h2>
+  <nav id="main-nav">
+    <ul>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+</div>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2015/9</h2>
+
+
+<article class="post">
+  <div class="post-content">
+    <header>
+      
+  
+    <h1 class="title"><a href="/2015/09/01/JQuery-Deferred-Promise/">JQuery中Deferred/Promise的使用</a></h1>
+  
+
+      
+      <time datetime="2015-09-01T00:55:27.000Z">Sep 1 2015</time>
+      
+    </header>
+    <div class="entry">
+      
+        <p>同样Deferred也是为了解决异步嵌套回调而存在的。早在JQuery 1.5就已经支持了。</p>
+<p>使用方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> dtd = $.Deferred(); <span class="comment">// 新建一个Deferred对象</span></div><div class="line"><span class="keyword">var</span> wait = <span class="function"><span class="keyword">function</span><span class="params">(dtd)</span></span>{</div><div class="line">    <span class="keyword">var</span> tasks = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>{</div><div class="line">　　　　　　alert(<span class="string">"执行完毕！"</span>);</div><div class="line">　　　　　　dtd.resolve(); <span class="comment">// 改变Deferred对象的执行状态</span></div><div class="line">　　　　};</div><div class="line"></div><div class="line">　　　　setTimeout(tasks,<span class="number">5000</span>);</div><div class="line">　　　　<span class="keyword">return</span> dtd.promise(); <span class="comment">// 返回promise对象</span></div><div class="line">　　};</div><div class="line"><span class="keyword">var</span> d = wait(dtd); <span class="comment">// 新建一个d对象，改为对这个对象进行操作</span></div><div class="line">$.when(d)</div><div class="line"> .done(<span class="function"><span class="keyword">function</span><span class="params">()</span></span>{ alert(<span class="string">"哈哈，成功了！"</span>); })</div><div class="line"> .fail(<span class="function"><span class="keyword">function</span><span class="params">()</span></span>{ alert(<span class="string">"出错啦！"</span>); });</div></pre></td></tr></table></figure>
+
+<p>我们看下怎么样用，下面列举了几个场景：</p>
+<ol>
+<li>单个Ajax异步交互</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$.ajax(<span class="string">'abc.php'</span>).done(<span class="function"><span class="keyword">function</span><span class="params">(result)</span> </span>{</div><div class="line">    alert(<span class="string">'success'</span>);</div><div class="line">}).fail(<span class="function"><span class="keyword">function</span> <span class="params">(jqXHR, textStatus, errorThrown)</span> </span>{</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'error'</span>);</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<ol>
+<li>多个Ajax异步交互</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$.when($.ajax(<span class="string">'abc.php'</span>), $.ajax(<span class="string">'abc2.php'</span>), $.ajax(<span class="string">'abc3.php'</span>))</div><div class="line">.done(<span class="function"><span class="keyword">function</span><span class="params">(result1, result2, result3)</span> </span>{</div><div class="line">    alert(<span class="string">'success'</span>);</div><div class="line">}).fail(<span class="function"><span class="keyword">function</span> <span class="params">(jqXHR, textStatus, errorThrown)</span> </span>{</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'error'</span>);</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<ol>
+<li>动画链式调用</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$.when(preloadImage())</div><div class="line">.then(animation01)</div><div class="line">.then(animation02)</div><div class="line">.then(animation03)</div><div class="line">.then(transition)</div><div class="line">.then(merge)</div><div class="line">.then(zoom)</div><div class="line">.then(showContent)</div><div class="line">.then(flicker);</div></pre></td></tr></table></figure>
+
+<p>和Promise/A+的规范有些出入，可能因为实现比较早，但是其意义和原理是差不多的。</p>
+
+      
+    </div>
+    
+      
+    
+  </div>
+</article>
+
+
+
+
+<div class="pagination">
+  <table width='100%'>
+    <tbody>
+    <tr>
+      <td width='120' align='left'>
+        
+      </td>
+      <td width='auto' align='center'>
+          <a href="/archives/">文章归档</a>
+      </td>
+      <td width='120' align='right'>
+        
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+</div></div>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer"><div class="inner"><div class="alignleft">
+  <p>
+  
+    &copy; 2015 H1bomb
+  
+  </p>
+  <p>
+    <a href="http://github.com/willerce/hexo-theme-noderce">Noderce</a> Theme By <a href="http://willerce.com" >willerce</a>
+  </p>
+
+</div>
+<div class="clearfix"></div></div></footer>
+  <script type="text/javascript">
+
+</script>
+
+</body>
+</html>
