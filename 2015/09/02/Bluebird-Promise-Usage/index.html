@@ -1,0 +1,161 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>uupup！ › Bluebird中Promise模式使用</title>
+  <meta name="author" content="H1bomb">
+  
+  <meta name="description" content="Bluebird是一个高性能全功能的Promise库，主要有以下特性：
+
+
+实现了Promises A+规范
+同步检查(promise状态，返回值，失败原因)
+并发调用(调用多个异步处理)
+异步模型转化到Promise模式
+使用通过并行使用Python/C＃进行资源管理的取消和超时
+并行的C#异步和">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Bluebird中Promise模式使用"/>
+  <meta property="og:site_name" content="uupup！"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="uupup！" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-63097959-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header"><div class="meta inner">
+  <h1><a href="/">uupup！</a></h1>
+  <h2><a href="/"></a></h2>
+  <nav id="main-nav">
+    <ul>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+</div>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  <div class="post-content">
+    <header>
+      
+  
+    <h1 class="title">Bluebird中Promise模式使用</h1>
+  
+
+      
+      <time datetime="2015-09-02T00:55:32.000Z">Sep 2 2015</time>
+      
+    </header>
+    <div class="entry">
+      
+        <p><img src="https://camo.githubusercontent.com/f67ead75c0654cefe0c5b791508731cf08cb5b0c/687474703a2f2f7065746b61616e746f6e6f762e6769746875622e696f2f626c7565626972642f6c6f676f2e706e67" alt="bluebird logo"><br>Bluebird是一个高性能全功能的Promise库，主要有以下特性：</p>
+<blockquote>
+<ul>
+<li>实现了Promises A+规范</li>
+<li>同步检查(promise状态，返回值，失败原因)</li>
+<li>并发调用(调用多个异步处理)</li>
+<li>异步模型转化到Promise模式</li>
+<li>使用通过并行使用Python/C＃进行资源管理的取消和超时</li>
+<li>并行的C#异步和等待</li>
+<li>试用的工具方法，如：<br>.bind()<br>.call()<br>Promise.join()…</li>
+<li>调试解决方案和合理的默认值</li>
+<li>优越的性能表现</li>
+</ul>
+</blockquote>
+<p>bluebird支持node.js和浏览器端</p>
+<p>node.js</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm <span class="operator"><span class="keyword">install</span> bluebird</span></div></pre></td></tr></table></figure>
+
+<p>然后</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Promise = <span class="built_in">require</span>(<span class="string">"bluebird"</span>);</div></pre></td></tr></table></figure>
+
+<p>浏览器端支持（ES5）</p>
+<p><img src="https://camo.githubusercontent.com/335f3fdee6026df48a9699235b03cd3e6bf3dba9/68747470733a2f2f73617563656c6162732e636f6d2f62726f777365722d6d61747269782f7065746b615f616e746f6e6f762e737667" alt="浏览器支持"></p>
+<p>可见对于IE必须是IE9和以上</p>
+<p>用法：</p>
+<p>下载：<a href="https://cdn.jsdelivr.net/bluebird/latest/bluebird.js" target="_blank" rel="external">bluebird.js</a>或<a href="https://cdn.jsdelivr.net/bluebird/latest/bluebird.min.js" target="_blank" rel="external">bluebird.min.js</a></p>
+<p>以解析一个json文件为例</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">fs.readFileAsync(<span class="string">"file.json"</span>).then(<span class="built_in">JSON</span>.parse).then(<span class="function"><span class="keyword">function</span><span class="params">(val)</span> </span>{</div><div class="line">    <span class="built_in">console</span>.log(val.success);</div><div class="line">})</div><div class="line">.catch(<span class="built_in">SyntaxError</span>, <span class="function"><span class="keyword">function</span><span class="params">(e)</span> </span>{</div><div class="line">    <span class="built_in">console</span>.error(<span class="string">"invalid json in file"</span>);</div><div class="line">})</div><div class="line">.catch(<span class="function"><span class="keyword">function</span><span class="params">(e)</span> </span>{</div><div class="line">    <span class="built_in">console</span>.error(<span class="string">"unable to read file"</span>);</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>具体需要看详细的可以查看<a href="https://github.com/petkaantonov/bluebird" target="_blank" rel="external">官方github</a></p>
+
+      
+    </div>
+    
+    <footer>
+      <div class="alignleft">
+      
+      
+      </div>
+      <div class="clearfix"></div>
+    </footer>
+    
+  </div>
+</article>
+
+
+<section id="comment">
+  
+            <!-- Duoshuo Comment BEGIN -->
+            <div class="ds-thread"></div>
+            <script type="text/javascript">
+                var duoshuoQuery = {short_name:"uupup"};
+                (function() {
+                    var ds = document.createElement('script');
+                    ds.type = 'text/javascript';ds.async = true;
+                    ds.src = 'http://static.duoshuo.com/embed.js';
+                    ds.charset = 'UTF-8';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                })();
+            </script>
+            <!-- Duoshuo Comment END -->
+      
+  
+</section>
+
+</div></div>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer"><div class="inner"><div class="alignleft">
+  <p>
+  
+    &copy; 2015 H1bomb
+  
+  </p>
+  <p>
+    <a href="http://github.com/willerce/hexo-theme-noderce">Noderce</a> Theme By <a href="http://willerce.com" >willerce</a>
+  </p>
+
+</div>
+<div class="clearfix"></div></div></footer>
+  <script type="text/javascript">
+
+</script>
+
+</body>
+</html>
