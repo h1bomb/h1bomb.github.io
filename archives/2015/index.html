@@ -58,6 +58,117 @@
     <header>
       
   
+    <h1 class="title"><a href="/2015/09/07/40-npm-modules-we-can-t-live-without/">40个我们不可或缺的NPM包[译]</a></h1>
+  
+
+      
+      <time datetime="2015-09-07T12:15:40.000Z">Sep 7 2015</time>
+      
+    </header>
+    <div class="entry">
+      
+        <p>原地址：<a href="https://medium.com/startup-study-group/40-npm-modules-we-can-t-live-without-36e29e352e3a" target="_blank" rel="external">https://medium.com/startup-study-group/40-npm-modules-we-can-t-live-without-36e29e352e3a</a></p>
+<p><img src="https://d262ilb51hltx0.cloudfront.net/max/800/1*Cv7F9UtBMhsrcV2_rwqEgA.png" alt="npm picture"></p>
+<p>Croissant按照字母顺序分享了他们用到的40个不可或缺的NPM模块：</p>
+<p>agenda</p>
+<p>这是一个类似于“cron”的作业，如每隔几分钟做一些事情。</p>
+<p>agenda-ui</p>
+<p>可视化的界面，用于管理agenda的作业，就像麦当劳的订单界面，让员工知道订单的状态。</p>
+<p>async</p>
+<p>用于对多个异步一次处理，主要用于异步编程，尽管我们也开始迁移到”q”,但是我们任然在一些地方使用，像“waterfall”和“each”对于一行数据在多数据相互依赖操作，会用到。</p>
+<p>aws-sdk</p>
+<p>我们用于上传文件到AWS S3上。</p>
+<p>bcryptjs</p>
+<p>担心你的密码的安全性？不用了！该算法是行业标准。即使我们遭受过黑客攻击，您的密码将仍然只是字母和符号混合的字符串。只要你的密码不是一个简单字典中的单词，虽然，因为如果有人没有得到这个数据，他们可以尝试在字典中的所有单词进行暴力破解。</p>
+<p>body-parser</p>
+<p>我们使用ExpressJS，所以我们需要序列化那些JSON的响应。</p>
+<p>braintree</p>
+<p>用于支付的一个智能（支付网关）依赖包。（国内用到不多）</p>
+<p>chai</p>
+<p>我们使用这个用于集成测试。（一个断言库）</p>
+<p>compression</p>
+<p>另一个像Express一样，你需要的包。用于压缩服务的响应，让数据在网络上传输更快。好东西。</p>
+<p>express</p>
+<p>这是个大魔法师。这是一个ExpressJS和NodeJS的web服务的核心模块，让我们可以不用写了大量的样板HTTP服务器代码。带来了一些很酷的特性，如指定一个静态目录作为一个简单的文件服务器，当然，以从它的充满活力的社区，创建的许多插件，可以很容易使用。</p>
+<p>forever</p>
+<p>如果一个node进程或者express服务崩溃了怎么办？这个小家伙会在后台为你重新启动。这实在是太聪明 - 你可以指定运行多久失败需要重新启动。这可以防止重启一遍又一遍自动失败进程。</p>
+<p>fs-extra</p>
+<p>当“fs”模块不够用时，“fs-extra”给你想要的更多功能。我们真的只是用它来满足使一个嵌套的文件夹如果在父文件夹不存在创建的能力。出于某种原因，对于“fs”来说，这是过分的要求。</p>
+<p>gm</p>
+<p>这个模块是一种法术。GraphicsMagick是一个包装已经由来已久的被用于许多图像操纵的很经典ImageMagick的C库。我们使用对上传图片的尺寸缩放和切图操作。你知道的那些放在AWS美丽场馆我们，我们会对它们用这个处理。</p>
+<p>gulp</p>
+<p>Gulp总是在我们编码背后运行着。它会自动的压缩我们的javascript和css文件。我们把它用于测试运行。它也有很多的包（如果你要找的话）！有人说它像“grunt”，其实是流运行的。</p>
+<p>gulp-angular-templatecache</p>
+<p>之前我们提到用Angular吗？我们是用Angular的。这个gulp插件允许我们在所有的HTML模板为一个文件以便更快的加载网站。Angular在加载页面时可以使用这些模板。</p>
+<p>gulp-concat</p>
+<p>记得我们前面谈到的呗？这需要找下。用于合并文件。</p>
+<p>gulp-csso</p>
+<p>做css最小化的。</p>
+<p>gulp-istanbul</p>
+<p>一个运行istanbul的单元测试覆盖率的gulp插件。</p>
+<p>gulp-livereload</p>
+<p>前端开发者的必备，可以连接你的浏览器当每一次文件修改它会刷新页面。做得好，gulp。</p>
+<p>gulp-mocha</p>
+<p>用于测试，这个插件封装了mocha，我们可以智能的进行测试，就像保证接口端可以正常运行。</p>
+<p>gulp-plumber</p>
+<p>由于我们所有事情用gulp的流和管道，我们需要一个小小的库，万一像gulp-csso运行失败，可以保证其他运行平滑。</p>
+<p>gulp-sass</p>
+<p>你以为我们使用CSS？ 再想一想。你看到的一切曾经是一个轻量的，顶尖的，SCSS（又名Sass）文件。Gulp 监听和编译每当我们作出改变时编译我们出主要的CSS的输出..超级快！</p>
+<p>gulp-uglify</p>
+<p>最后但并非最不重要的，这一插件确实不错的压缩前端JavaScript代码，所以我们可以传输给你超快速和超安全。</p>
+<p>jwt-simple</p>
+<p>Back to reality, away from the gulpies, next we have the package that makes authorization easy. When you log in to Croissant, we take your information and smush it all together and encode it with jwt-simple and tell your browser what came out. Then, your browser uses the token we gave you each time it does something that requires you to be logged in.</p>
+<p>lodash</p>
+<p>Lodash embodies winning at life. All the stuff you ever needed for working with collections of objects and arrays in JavaScript all in one simple library. We are big fans of pick, omit, and contains — useful for limiting API server responses for quicker load times.</p>
+<p>mime-types</p>
+<p>We run a tight ship here at Croissant, and that means keeping track of the file types that we upload to AWS S3. One trick to doing this is taking the file extension and feeding it into this library, resulting in something like “image/jpeg” for a jpg file.</p>
+<p>mocha</p>
+<p>With this, all we need to do is type “mocha” and it runs a plethora of tests that we drew up using the “describe” and “it” functions for organizing tests. It doesn’t get much simpler than this for running JavaScript tests.</p>
+<p>moment</p>
+<p>Everyone who has ever programmed in anything has run into dealing with dates and times. JavaScript by itself is very basic, but moment makes it all better. With moment, you just pass in the raw JavaScript date object, and in return, you get a nice little ball of date and time functionality that you can play with, such as formatting, adding time, and altering.</p>
+<p>moment-timezone</p>
+<p>Don’t fall into the trap of forgetting about timezones though. If you’re not careful, someone on the other side of the world will think your store opens at 3 am instead of noon. This package is useful in converting our UTC server times into the timezone of the venue, so you know when to show up, no matter where you are in the world.</p>
+<p>mongoose</p>
+<p>Did we mention we use MongoDB? We use MongoDB. Mongoose keeps our team in the know, allowing us to always see at a glance what the structure of our data is. Without it, you might end up with all sorts of objects in the database, causing who knows what kind of chaos on the back and front ends.</p>
+<p>morgan</p>
+<p>Just like body-parser, this is another one of those packages that you simply cannot do without when running an Express server. Not only does it output all sorts of info, such as response time and path name whenever there is an HTTP request, but it also lets you customize (using a function!) what you want to see in the output.</p>
+<p>newrelic</p>
+<p>New Relic is a cool company that gives you info about your app. You simply add the package to the first line of code in your server, and then go onto their website to watch the magic happen. We use it to get notified if there are a bunch of errors happening on our server in production.</p>
+<p>nodemailer</p>
+<p>If you ever need to send email, don’t send it yourself — use a transactional email service, such as SendGrid. It comes with some great features, such as the ability to make a nice template that wraps all of our emails. Nodemailer is the package that lets us send simple messages to SendGrid.</p>
+<p>prerender-node</p>
+<p>Remember that Angular thing we use? It sucks for SEO because most search engines can’t understand it. In comes prerendering to the rescue. With it, web crawlers can easily see a non-Angular version of your website because the prerenderer estimated what it looks like. Turn off JavaScript in your web browser next time you browse Croissant and you’ll see what we mean.</p>
+<p>protractor</p>
+<p>Anyone who has ever worked with webdriver for automating browser tasks and tests, will quickly see the value in having an Angular wrapper. This wrapper waits for Angular to load on the page and waits for any promises to resolve before going to the next line of tests. This is handy for our app which is rich in asynchronous events.</p>
+<p>q</p>
+<p>While async is good for waterfalls and map operations, “q” is great for making promises. By that, we mean taking a normal callback function and wrapping it up in the “q” promise syntax. This lets us make promise chains involving asynchronous functions that normally use callbacks, a.k.a. callback hell.</p>
+<p>request</p>
+<p>Every once in a while we need to make a manual HTTP request to an external server. We’ve always stuck to using this package for doing this kind of task since the dawn of NodeJS. Mostly however, the sdk’s for the external services we use do this for us, using “request” under the hood.</p>
+<p>slug</p>
+<p>This is the library that turns “Hello There” into “hello-there”, perfect for making dynamic titles into URL-friendly links. We use this for taking the names of our venues and making that unique link that you can share with your buddies so they know where to find you.</p>
+<p>stripe</p>
+<p>Time to get paid. Stripe is our payment processor for credit cards. They’re nice enough to store customer credit card information in a PCI-compliant way so we don’t have to. We use their sdk to put cards on file and make charges.</p>
+<p>supertest-as-promised</p>
+<p>This is the core of our integration tests. Using promises we can easily expect a certain response status code, while also using the response data in the next step of the test. We use this with chai.</p>
+<p>Welp, there you have it folks. Our list of goodies. We’re always open to questions, comments, and suggestions. Please be gentle :)</p>
+<p>Dave<br>Co-founder &amp; CEO, Croissant</p>
+
+      
+    </div>
+    
+      
+    
+  </div>
+</article>
+
+
+
+
+<article class="post">
+  <div class="post-content">
+    <header>
+      
+  
     <h1 class="title"><a href="/2015/09/06/measuring-javascript-functions-performance/">测量javascript函数的性能[译]</a></h1>
   
 
@@ -135,117 +246,6 @@
 <p>The other reason we never know which code is faster, if we have multiple ways of doing the same thing, is because context matters. In the previous section we perform a case insensitive string search looking for one string among 26 other strings. It’s likely that the conclusion would be totally different if we instead had to look for one string among 100,000 other strings.</p>
 <p>The list above isn’t exhaustive as there are more pitfalls to be aware of. For example, measuring unrealistic scenarios or only measuring on one JavaScript engine. But the sure thing is that a great asset for JavaScript developers who want to write faster and better web apps is performance.now(). Last but not least, remember that measuring execution time only yields one dimension of “better code”. There’s also memory and code complexity considerations to bear in mind.</p>
 <p>What about you? Have you ever used this function to test your code’s performance? If not, how do you proceed in this stage? Please share your thoughts in the comments below. Let’s start a discussion!</p>
-
-      
-    </div>
-    
-      
-    
-  </div>
-</article>
-
-
-
-
-<article class="post">
-  <div class="post-content">
-    <header>
-      
-  
-    <h1 class="title"><a href="/2015/09/06/40-npm-modules-we-can-t-live-without/">40个我们不可或缺的NPM包[译]</a></h1>
-  
-
-      
-      <time datetime="2015-09-06T00:41:42.000Z">Sep 6 2015</time>
-      
-    </header>
-    <div class="entry">
-      
-        <p>原地址：<a href="https://medium.com/startup-study-group/40-npm-modules-we-can-t-live-without-36e29e352e3a" target="_blank" rel="external">https://medium.com/startup-study-group/40-npm-modules-we-can-t-live-without-36e29e352e3a</a></p>
-<p><img src="https://d262ilb51hltx0.cloudfront.net/max/800/1*Cv7F9UtBMhsrcV2_rwqEgA.png" alt="npm picture"></p>
-<p>Croissant按照字母顺序分享了他们用到的40个不可或缺的NPM模块：</p>
-<p>agenda</p>
-<p>这是一个类似于“cron”的作业，如每隔几分钟做一些事情。</p>
-<p>agenda-ui</p>
-<p>可视化的界面，用于管理agenda的作业，就像麦当劳的订单界面，让员工知道订单的状态。</p>
-<p>async</p>
-<p>用于对多个异步一次处理，主要用于异步编程，尽管我们也开始迁移到”q”,但是我们任然在一些地方使用，像“waterfall”和“each”对于一行数据在多数据相互依赖操作，会用到。</p>
-<p>aws-sdk</p>
-<p>我们用于上传文件到AWS S3上。</p>
-<p>bcryptjs</p>
-<p>担心你的密码的安全性？不用了！该算法是行业标准。即使我们遭受过黑客攻击，您的密码将仍然只是字母和符号混合的字符串。只要你的密码不是一个简单字典中的单词，虽然，因为如果有人没有得到这个数据，他们可以尝试在字典中的所有单词进行暴力破解。</p>
-<p>body-parser</p>
-<p>我们使用ExpressJS，所以我们需要序列化那些JSON的响应。</p>
-<p>braintree</p>
-<p>用于支付的一个智能（支付网关）依赖包。（国内用到不多）</p>
-<p>chai</p>
-<p>我们使用这个用于集成测试。（一个断言库）</p>
-<p>compression</p>
-<p>另一个像Express一样，你需要的包。用于压缩服务的响应，让数据在网络上传输更快。好东西。</p>
-<p>express</p>
-<p>这是个大魔法师。这是一个ExpressJS和NodeJS的web服务的核心模块，让我们可以不用写了大量的样板HTTP服务器代码。带来了一些很酷的特性，如指定一个静态目录作为一个简单的文件服务器，当然，以从它的充满活力的社区，创建的许多插件，可以很容易使用。</p>
-<p>forever</p>
-<p>如果一个node进程或者express服务崩溃了怎么办？这个小家伙会在后台为你重新启动。这实在是太聪明 - 你可以指定运行多久失败需要重新启动。这可以防止重启一遍又一遍自动失败进程。</p>
-<p>fs-extra</p>
-<p>当“fs”模块不够用时，“fs-extra”给你想要的更多功能。我们真的只是用它来满足使一个嵌套的文件夹如果在父文件夹不存在创建的能力。出于某种原因，对于“fs”来说，这是过分的要求。</p>
-<p>gm</p>
-<p>This module is wizardry. GraphicsMagick is a wrapper for the long-lived ImageMagick C library that has been used through the ages by many an image manipulator. We use this to resize and crop our image uploads. You know all those beautiful venue images that we put on AWS? We used this on them first.</p>
-<p>gulp</p>
-<p>Gulp is always running in the background while we code. It automatically compresses our javascript and css files. We also use it to spawn our test runners. It has tons of packages (which you’re about to find out about)! Some people say it’s like “grunt”, but with streams.</p>
-<p>gulp-angular-templatecache</p>
-<p>Did we mention we use Angular? We use Angular. This gulp plugin allows us to smush together all our html templates into one file for a quicker load time on the website. Angular can then use this template to load the pages.</p>
-<p>gulp-concat</p>
-<p>Remember that smushing thing we talked about earlier? This takes care of that.</p>
-<p>gulp-csso</p>
-<p>Remember how we like smushing things? This lets us smush things into even smaller files by first minifying the css files that are about to be smushed.</p>
-<p>gulp-istanbul</p>
-<p>Gulp is also a great test runner, runner. While running tests, “istanbul” will output a report showing our unit and integration test coverage, with percentages showing how much code was covered in the test. Magical.</p>
-<p>gulp-livereload</p>
-<p>A must for front-end developers, this connects to your web browser and refreshes it every time you make a change to an html file. Good job, gulp.</p>
-<p>gulp-mocha</p>
-<p>More test stuff. This is just a wrapper for mocha, which we use for integration tests, such as making sure an API endpoint works as expected.</p>
-<p>gulp-plumber</p>
-<p>Because of all our streaming and piping with gulp, we need this little library. In case something like gulp-csso fails, this will keep things running smoothly.</p>
-<p>gulp-sass</p>
-<p>You thought we use CSS? Think again. Everything you see was once a young, budding, scss (a.k.a. Sass) file. Gulp watches and compiles our master css output every time we make a change.. super quick!</p>
-<p>gulp-uglify</p>
-<p>Last but not least, this gulp plugin does good ol’ uglification of front end JavaScript code so we can send it to you super fast and super securely.</p>
-<p>jwt-simple</p>
-<p>Back to reality, away from the gulpies, next we have the package that makes authorization easy. When you log in to Croissant, we take your information and smush it all together and encode it with jwt-simple and tell your browser what came out. Then, your browser uses the token we gave you each time it does something that requires you to be logged in.</p>
-<p>lodash</p>
-<p>Lodash embodies winning at life. All the stuff you ever needed for working with collections of objects and arrays in JavaScript all in one simple library. We are big fans of pick, omit, and contains — useful for limiting API server responses for quicker load times.</p>
-<p>mime-types</p>
-<p>We run a tight ship here at Croissant, and that means keeping track of the file types that we upload to AWS S3. One trick to doing this is taking the file extension and feeding it into this library, resulting in something like “image/jpeg” for a jpg file.</p>
-<p>mocha</p>
-<p>With this, all we need to do is type “mocha” and it runs a plethora of tests that we drew up using the “describe” and “it” functions for organizing tests. It doesn’t get much simpler than this for running JavaScript tests.</p>
-<p>moment</p>
-<p>Everyone who has ever programmed in anything has run into dealing with dates and times. JavaScript by itself is very basic, but moment makes it all better. With moment, you just pass in the raw JavaScript date object, and in return, you get a nice little ball of date and time functionality that you can play with, such as formatting, adding time, and altering.</p>
-<p>moment-timezone</p>
-<p>Don’t fall into the trap of forgetting about timezones though. If you’re not careful, someone on the other side of the world will think your store opens at 3 am instead of noon. This package is useful in converting our UTC server times into the timezone of the venue, so you know when to show up, no matter where you are in the world.</p>
-<p>mongoose</p>
-<p>Did we mention we use MongoDB? We use MongoDB. Mongoose keeps our team in the know, allowing us to always see at a glance what the structure of our data is. Without it, you might end up with all sorts of objects in the database, causing who knows what kind of chaos on the back and front ends.</p>
-<p>morgan</p>
-<p>Just like body-parser, this is another one of those packages that you simply cannot do without when running an Express server. Not only does it output all sorts of info, such as response time and path name whenever there is an HTTP request, but it also lets you customize (using a function!) what you want to see in the output.</p>
-<p>newrelic</p>
-<p>New Relic is a cool company that gives you info about your app. You simply add the package to the first line of code in your server, and then go onto their website to watch the magic happen. We use it to get notified if there are a bunch of errors happening on our server in production.</p>
-<p>nodemailer</p>
-<p>If you ever need to send email, don’t send it yourself — use a transactional email service, such as SendGrid. It comes with some great features, such as the ability to make a nice template that wraps all of our emails. Nodemailer is the package that lets us send simple messages to SendGrid.</p>
-<p>prerender-node</p>
-<p>Remember that Angular thing we use? It sucks for SEO because most search engines can’t understand it. In comes prerendering to the rescue. With it, web crawlers can easily see a non-Angular version of your website because the prerenderer estimated what it looks like. Turn off JavaScript in your web browser next time you browse Croissant and you’ll see what we mean.</p>
-<p>protractor</p>
-<p>Anyone who has ever worked with webdriver for automating browser tasks and tests, will quickly see the value in having an Angular wrapper. This wrapper waits for Angular to load on the page and waits for any promises to resolve before going to the next line of tests. This is handy for our app which is rich in asynchronous events.</p>
-<p>q</p>
-<p>While async is good for waterfalls and map operations, “q” is great for making promises. By that, we mean taking a normal callback function and wrapping it up in the “q” promise syntax. This lets us make promise chains involving asynchronous functions that normally use callbacks, a.k.a. callback hell.</p>
-<p>request</p>
-<p>Every once in a while we need to make a manual HTTP request to an external server. We’ve always stuck to using this package for doing this kind of task since the dawn of NodeJS. Mostly however, the sdk’s for the external services we use do this for us, using “request” under the hood.</p>
-<p>slug</p>
-<p>This is the library that turns “Hello There” into “hello-there”, perfect for making dynamic titles into URL-friendly links. We use this for taking the names of our venues and making that unique link that you can share with your buddies so they know where to find you.</p>
-<p>stripe</p>
-<p>Time to get paid. Stripe is our payment processor for credit cards. They’re nice enough to store customer credit card information in a PCI-compliant way so we don’t have to. We use their sdk to put cards on file and make charges.</p>
-<p>supertest-as-promised</p>
-<p>This is the core of our integration tests. Using promises we can easily expect a certain response status code, while also using the response data in the next step of the test. We use this with chai.</p>
-<p>Welp, there you have it folks. Our list of goodies. We’re always open to questions, comments, and suggestions. Please be gentle :)</p>
-<p>Dave<br>Co-founder &amp; CEO, Croissant</p>
 
       
     </div>
