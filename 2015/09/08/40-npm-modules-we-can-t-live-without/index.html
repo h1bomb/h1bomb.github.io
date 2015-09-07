@@ -64,7 +64,7 @@ agenda
   
 
       
-      <time datetime="2015-09-07T12:15:40.000Z">Sep 7 2015</time>
+      <time datetime="2015-09-07T16:19:33.000Z">Sep 8 2015</time>
       
     </header>
     <div class="entry">
@@ -117,27 +117,28 @@ agenda
 <p>gulp-sass</p>
 <p>你以为我们使用CSS？ 再想一想。你看到的一切曾经是一个轻量的，顶尖的，SCSS（又名Sass）文件。Gulp 监听和编译每当我们作出改变时编译我们出主要的CSS的输出..超级快！</p>
 <p>gulp-uglify</p>
-<p>最后但并非最不重要的，这一插件确实不错的压缩前端JavaScript代码，所以我们可以传输给你超快速和超安全。</p>
+<p>最后但并非最不重要的，这一插件确实不错的压缩前端JavaScript代码，所以我们可以超快速和超安全传输给你。</p>
 <p>jwt-simple</p>
-<p>Back to reality, away from the gulpies, next we have the package that makes authorization easy. When you log in to Croissant, we take your information and smush it all together and encode it with jwt-simple and tell your browser what came out. Then, your browser uses the token we gave you each time it does something that requires you to be logged in.</p>
+<p>JWT(JSON Web Token) 编码和解码的node包.</p>
 <p>lodash</p>
 <p>Lodash embodies winning at life. All the stuff you ever needed for working with collections of objects and arrays in JavaScript all in one simple library. We are big fans of pick, omit, and contains — useful for limiting API server responses for quicker load times.</p>
+<p>有用的Javascript的工具集，pick, omit, contains对于接口服务器响应时间大大缩短。</p>
 <p>mime-types</p>
-<p>We run a tight ship here at Croissant, and that means keeping track of the file types that we upload to AWS S3. One trick to doing this is taking the file extension and feeding it into this library, resulting in something like “image/jpeg” for a jpg file.</p>
+<p>用于跟踪文件扩展名的库，一个jpg图片文件得到的结果如“image/jpeg”。</p>
 <p>mocha</p>
-<p>With this, all we need to do is type “mocha” and it runs a plethora of tests that we drew up using the “describe” and “it” functions for organizing tests. It doesn’t get much simpler than this for running JavaScript tests.</p>
+<p>mocha是一个测试平台，可以使用BDD的方式测试，使用“describe”和“it”，没有比这更简单的Javascript的测试了。 </p>
 <p>moment</p>
-<p>Everyone who has ever programmed in anything has run into dealing with dates and times. JavaScript by itself is very basic, but moment makes it all better. With moment, you just pass in the raw JavaScript date object, and in return, you get a nice little ball of date and time functionality that you can play with, such as formatting, adding time, and altering.</p>
+<p>人性化的时间格式。</p>
 <p>moment-timezone</p>
-<p>Don’t fall into the trap of forgetting about timezones though. If you’re not careful, someone on the other side of the world will think your store opens at 3 am instead of noon. This package is useful in converting our UTC server times into the timezone of the venue, so you know when to show up, no matter where you are in the world.</p>
+<p>moment的时区转化</p>
 <p>mongoose</p>
-<p>Did we mention we use MongoDB? We use MongoDB. Mongoose keeps our team in the know, allowing us to always see at a glance what the structure of our data is. Without it, you might end up with all sorts of objects in the database, causing who knows what kind of chaos on the back and front ends.</p>
+<p>我们提到我们用MongoDB的？我们使用MongoDB的。Mongoose一直我们的团队所熟知，让我们总能看到一眼我们的数据结构是什么。没有它，你可能最终与各种数据库中的对象，造成谁知道什么样的混乱的后端和前端的。</p>
 <p>morgan</p>
-<p>Just like body-parser, this is another one of those packages that you simply cannot do without when running an Express server. Not only does it output all sorts of info, such as response time and path name whenever there is an HTTP request, but it also lets you customize (using a function!) what you want to see in the output.</p>
+<p>express的http的访问日志中间件。</p>
 <p>newrelic</p>
-<p>New Relic is a cool company that gives you info about your app. You simply add the package to the first line of code in your server, and then go onto their website to watch the magic happen. We use it to get notified if there are a bunch of errors happening on our server in production.</p>
+<p>New Relic是一家给你的应用提供信息的很酷的公司。你可以很简单的加一个包到你服务的第一行，然后去他们的网站观察神奇的事情发生。我们使用它来获取在产品化的服务上发生的错误。</p>
 <p>nodemailer</p>
-<p>If you ever need to send email, don’t send it yourself — use a transactional email service, such as SendGrid. It comes with some great features, such as the ability to make a nice template that wraps all of our emails. Nodemailer is the package that lets us send simple messages to SendGrid.</p>
+<p>如果你需要发邮件，不需要你自个发-使用一个邮件传输服务，就像SendGird。这个有一些很好的特性，就像给邮件封装一个漂亮的模板。Nodemailer就是一个让我们发生简单信息到SendGird的包。</p>
 <p>prerender-node</p>
 <p>Remember that Angular thing we use? It sucks for SEO because most search engines can’t understand it. In comes prerendering to the rescue. With it, web crawlers can easily see a non-Angular version of your website because the prerenderer estimated what it looks like. Turn off JavaScript in your web browser next time you browse Croissant and you’ll see what we mean.</p>
 <p>protractor</p>
