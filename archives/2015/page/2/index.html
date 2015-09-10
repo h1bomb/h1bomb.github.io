@@ -58,6 +58,38 @@
     <header>
       
   
+    <h1 class="title"><a href="/2015/05/24/node-inheritance/">nodejs继承实现</a></h1>
+  
+
+      
+      <time datetime="2015-05-24T10:01:51.000Z">May 24 2015</time>
+      
+    </header>
+    <div class="entry">
+      
+        <p>直接上代码<a href="https://github.com/joyent/node/blob/master/lib/util.js" target="_blank" rel="external">/lib/util.js</a></p>
+<p>第634行</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">exports.inherits = <span class="function"><span class="keyword">function</span><span class="params">(ctor, superCtor)</span> </span>{</div><div class="line">  ctor.super_ = superCtor;</div><div class="line">  ctor.prototype = <span class="built_in">Object</span>.create(superCtor.prototype, {</div><div class="line">    constructor: {</div><div class="line">      value: ctor,</div><div class="line">      enumerable: <span class="literal">false</span>,</div><div class="line">      writable: <span class="literal">true</span>,</div><div class="line">      configurable: <span class="literal">true</span></div><div class="line">    }</div><div class="line">  });</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>从源码看也是使用原型的方式实现了继承，不过在<code>ctor.super_ = superCtor;</code>里面设置了一个<code>super_</code>的属性指向<br>被继承的构造函数,同时在继承超级构造的原型附加了一些构造的成员属性而创建的对象。</p>
+<p>至于constructor里面的这些属性，我目前只能猜猜是用于继承追溯或者构造函数的属性声明。<br>后面详细研究了node的util其他代码或许会有一个明确的答案。</p>
+
+      
+    </div>
+    
+      
+    
+  </div>
+</article>
+
+
+
+
+<article class="post">
+  <div class="post-content">
+    <header>
+      
+  
     <h1 class="title"><a href="/2015/05/21/JavaScript-inheritance2/">JavaScript的继承之二</a></h1>
   
 

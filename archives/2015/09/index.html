@@ -58,11 +58,107 @@
     <header>
       
   
-    <h1 class="title"><a href="/2015/09/08/40-npm-modules-we-can-t-live-without/">40个我们不可或缺的NPM包[译]</a></h1>
+    <h1 class="title"><a href="/2015/09/10/7-Reasons-to-Upgrade-to-Node-v4-Now/">7 Reasons to Upgrade to Node v4 Now</a></h1>
   
 
       
-      <time datetime="2015-09-07T16:19:33.000Z">Sep 8 2015</time>
+      <time datetime="2015-09-10T15:42:08.000Z">Sep 10 2015</time>
+      
+    </header>
+    <div class="entry">
+      
+        <p>Today Node v4 got released. It is the first stable release after the io.js merge and thus brings us a bunch of shiny, new ES6 language additions. While there’s already a great overview of the ES6 additions, this post shows how to make use of them!</p>
+<p>In particular, I’m going to address the following additions:</p>
+<p>Template Strings<br>Classes<br>Arrow Functions<br>Object Literals<br>Promises<br>String Methods<br>let and const</p>
+<ol>
+<li>Template Strings</li>
+</ol>
+<p>If you ever tried to create a multiline string in JavaScript, you probably ended up doing something similar to this:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> message = [</div><div class="line">    <span class="string">'The quick brown fox'</span>,</div><div class="line">    <span class="string">'jumps over'</span>,</div><div class="line">    <span class="string">'the lazy dog'</span></div><div class="line">].join(<span class="string">'\n'</span>);</div></pre></td></tr></table></figure>
+
+<p>While this works for a small amount of text, it gets messy for a couple of sentences. Therefore, a clever developer came up with a hack called multiline:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> multiline = <span class="built_in">require</span>(<span class="string">'multiline'</span>);</div><div class="line"><span class="keyword">var</span> message = multiline(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{<span class="comment">/*</span></div><div class="line">    The quick brown fox</div><div class="line">    jumps over</div><div class="line">    the lazy dog</div><div class="line">*/});</div></pre></td></tr></table></figure>
+
+<p>Luckily, ES6 brings us template strings:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> message = `</div><div class="line">    The quick brown fox</div><div class="line">        jumps over</div><div class="line">        the lazy dog</div><div class="line">`;</div></pre></td></tr></table></figure>
+
+<p>In addition, they also bring us string interpolation:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> name = <span class="string">'Schroedinger'</span>;</div><div class="line"></div><div class="line"><span class="comment">// stop doing this ...</span></div><div class="line"><span class="keyword">var</span> message = <span class="string">'Hello '</span> + name + <span class="string">', how is your cat?'</span>;</div><div class="line"><span class="keyword">var</span> message = [<span class="string">'Hello '</span>, name, <span class="string">', how is your cat?'</span>].join(<span class="string">''</span>);</div><div class="line"><span class="keyword">var</span> message = <span class="built_in">require</span>(<span class="string">'util'</span>).format(<span class="string">'Hello %s, how is your cat?'</span>, name);</div><div class="line"></div><div class="line"><span class="comment">// and instead do that ...</span></div><div class="line"><span class="keyword">var</span> message = `Hello ${name}, how is your cat?`;</div></pre></td></tr></table></figure>
+
+<p>Check out the details about template strings on MDN.</p>
+<ol>
+<li>Classes</li>
+</ol>
+<p>Defining classes in ES5 looks somewhat strange and definitely takes time to get used to:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Pet = <span class="function"><span class="keyword">function</span> <span class="params">(name)</span> </span>{</div><div class="line">    <span class="keyword">this</span>._name = name;</div><div class="line">};</div><div class="line"></div><div class="line">Pet.prototype.sayHello = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'*scratch*'</span>);</div><div class="line">};</div><div class="line"></div><div class="line"><span class="built_in">Object</span>.defineProperty(Pet.prototype, <span class="string">'name'</span>, {</div><div class="line">  get: <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._name;</div><div class="line">  }</div><div class="line">});</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">var</span> Cat = <span class="function"><span class="keyword">function</span> <span class="params">(name)</span> </span>{</div><div class="line">    Pet.call(<span class="keyword">this</span>, name);</div><div class="line">};</div><div class="line"></div><div class="line"><span class="built_in">require</span>(<span class="string">'util'</span>).inherits(Cat, Pet);</div><div class="line"></div><div class="line">Cat.prototype.sayHello = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    Pet.prototype.sayHello.call(<span class="keyword">this</span>);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'miaaaauw'</span>);</div><div class="line">};</div></pre></td></tr></table></figure>
+
+
+<p>Luckily we can now use the new ES6 syntax in Node:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Pet {</div><div class="line">    constructor(name) {</div><div class="line">        <span class="keyword">this</span>._name = name;</div><div class="line">    }</div><div class="line">    sayHello() {</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'*scratch*'</span>);</div><div class="line">    }</div><div class="line">    get name() {</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>._name;</div><div class="line">    }</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">class</span> Cat extends Pet {</div><div class="line">    constructor(name) {</div><div class="line">        super(name);</div><div class="line">    }</div><div class="line">    sayHello() {</div><div class="line">        super.sayHello();</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'miaaaauw'</span>);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>An extends keyword, constructors, calls to the super class and properties. How awesome? But there’s more. Check out the comprehensive guide on MDN</p>
+<ol>
+<li>Arrow Functions</li>
+</ol>
+<p>The dynamic binding of this on function invocation always causes some confusion, and people worked around it in a couple of ways:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Cat.prototype.notifyListeners = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</div><div class="line">    <span class="keyword">this</span>._listeners.forEach(<span class="function"><span class="keyword">function</span> <span class="params">(listener)</span> </span>{</div><div class="line">        self.notifyListener(listener);</div><div class="line">    });</div><div class="line">};</div><div class="line">Cat.prototype.notifyListeners = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>._listeners.forEach(<span class="function"><span class="keyword">function</span> <span class="params">(listener)</span> </span>{</div><div class="line">        <span class="keyword">this</span>.notifyListener(listener);</div><div class="line">    }.bind(<span class="keyword">this</span>));</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>Now you can just use fat arrow functions:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Cat.prototype.notifyListeners = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>._listeners.forEach((listener) =&gt; {</div><div class="line">        <span class="keyword">this</span>.notifyListener(listener);</div><div class="line">    });</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>Check out arrow functions in more detail.</p>
+<ol>
+<li>Object Literals</li>
+</ol>
+<p>When using object literals, you can now use a nice little shortcut:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> age = <span class="number">10</span>, name = <span class="string">'Petsy'</span>, size = <span class="number">32</span>;</div><div class="line"></div><div class="line"><span class="comment">// instead of this ...</span></div><div class="line"><span class="keyword">var</span> cat = {</div><div class="line">    age: age,</div><div class="line">    name: name,</div><div class="line">    size: size</div><div class="line">};</div><div class="line"></div><div class="line"><span class="comment">// ... do this ...</span></div><div class="line"><span class="keyword">var</span> cat = {</div><div class="line">    age,</div><div class="line">    name,</div><div class="line">    size</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>Additionally, you can now easily add functions to your object literals.</p>
+<ol>
+<li>Promises</li>
+</ol>
+<p>Instead of depending on third party libraries like bluebird or Q, you can now use native promises. Those expose the following apis:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span> Promise(<span class="function"><span class="keyword">function</span> <span class="params">(resolve, reject)</span> </span>{});</div><div class="line"><span class="keyword">var</span> p2 = Promise.resolve(<span class="number">20</span>);</div><div class="line"><span class="keyword">var</span> p3 = Promise.reject(<span class="keyword">new</span> <span class="built_in">Error</span>());</div><div class="line"><span class="keyword">var</span> p4 = Promise.all(p1, p2);</div><div class="line"><span class="keyword">var</span> p5 = Promise.race(p1, p2);</div><div class="line"></div><div class="line"><span class="comment">// and obviously</span></div><div class="line">p1.then(() =&gt; {}).catch(() =&gt; {});</div><div class="line"><span class="number">6.</span> <span class="built_in">String</span> Methods</div></pre></td></tr></table></figure>
+
+<p>We got a couple of new string utility functions too:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// replace `indexOf()` in a number of cases</span></div><div class="line">name.startsWith(<span class="string">'a'</span>)</div><div class="line">name.endsWith(<span class="string">'c'</span>);</div><div class="line">name.includes(<span class="string">'b'</span>);</div><div class="line"></div><div class="line"><span class="comment">// repeat the string three times</span></div><div class="line">name.repeat(<span class="number">3</span>);</div></pre></td></tr></table></figure>
+
+<p>Go and tell those ruby kids! Strings also support better unicode handling now.</p>
+<ol>
+<li>let and const</li>
+</ol>
+<p>Guess the return value of the following function call:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> x = <span class="number">20</span>;</div><div class="line">(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">if</span> (x === <span class="number">20</span>) {</div><div class="line">        <span class="keyword">var</span> x = <span class="number">30</span>;</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> x;</div><div class="line">}()); <span class="comment">// -&gt; undefined</span></div><div class="line">Yep, <span class="literal">undefined</span>. Replace <span class="keyword">var</span> <span class="keyword">with</span> <span class="keyword">let</span> and you get the expected behaviour:</div><div class="line"></div><div class="line"><span class="keyword">let</span> x = <span class="number">20</span>;</div><div class="line">(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">if</span> (x === <span class="number">20</span>) {</div><div class="line">        <span class="keyword">let</span> x = <span class="number">30</span>;</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> x;</div><div class="line">}()); <span class="comment">// -&gt; 20</span></div></pre></td></tr></table></figure>
+
+<p>The reason: var is function-scoped, while let is block-scoped (which is what most people expect). Because of that, it is save to say that let is the new var. You can get more details about let on MDN.</p>
+<p>Bonus: Node now supports the const keyword, which prevents you from reassigning a different value to the same reference:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> MY_CONST = <span class="number">42</span>; <span class="comment">// no, no</span></div><div class="line"><span class="keyword">const</span> MY_CONST = <span class="number">42</span>; <span class="comment">// yes, yes</span></div><div class="line"></div><div class="line">MY_CONST = <span class="number">10</span> <span class="comment">// with const, this is no longer possible</span></div></pre></td></tr></table></figure>
+
+<p>Wrapping Up</p>
+<p>Node v4 brings even more ES6 additions, but I hope that these seven examples already convinced you to update and use the latest version.</p>
+<p>There are many more language features (e.g. maps/sets, symbols and generators, just to mention a few more). Make sure that you also check the overview of ES6 additions to Node v4. Happy updating!</p>
+
+      
+    </div>
+    
+      
+    
+  </div>
+</article>
+
+
+
+
+<article class="post">
+  <div class="post-content">
+    <header>
+      
+  
+    <h1 class="title"><a href="/2015/09/10/40-npm-modules-we-can-t-live-without/">40个我们不可或缺的NPM包[译]</a></h1>
+  
+
+      
+      <time datetime="2015-09-10T15:36:44.000Z">Sep 10 2015</time>
       
     </header>
     <div class="entry">
@@ -119,7 +215,6 @@
 <p>jwt-simple</p>
 <p>JWT(JSON Web Token) 编码和解码的node包.</p>
 <p>lodash</p>
-<p>Lodash embodies winning at life. All the stuff you ever needed for working with collections of objects and arrays in JavaScript all in one simple library. We are big fans of pick, omit, and contains — useful for limiting API server responses for quicker load times.</p>
 <p>有用的Javascript的工具集，pick, omit, contains对于接口服务器响应时间大大缩短。</p>
 <p>mime-types</p>
 <p>用于跟踪文件扩展名的库，一个jpg图片文件得到的结果如“image/jpeg”。</p>
@@ -138,20 +233,22 @@
 <p>nodemailer</p>
 <p>如果你需要发邮件，不需要你自个发-使用一个邮件传输服务，就像SendGird。这个有一些很好的特性，就像给邮件封装一个漂亮的模板。Nodemailer就是一个让我们发生简单信息到SendGird的包。</p>
 <p>prerender-node</p>
-<p>Remember that Angular thing we use? It sucks for SEO because most search engines can’t understand it. In comes prerendering to the rescue. With it, web crawlers can easily see a non-Angular version of your website because the prerenderer estimated what it looks like. Turn off JavaScript in your web browser next time you browse Croissant and you’ll see what we mean.</p>
+<p>还记得我们是用Angular吗？这个是用于因为搜索引擎无法解析Angular才用的。带来了陈显的援助，使用这个包，网络爬虫可以更容易的看到一个不是Angular版本的网站因为prerenderer让它发生变化。关闭JavaScript在Web浏览器您再次浏览Croissant，你就会明白我们的意思。</p>
 <p>protractor</p>
-<p>Anyone who has ever worked with webdriver for automating browser tasks and tests, will quickly see the value in having an Angular wrapper. This wrapper waits for Angular to load on the page and waits for any promises to resolve before going to the next line of tests. This is handy for our app which is rich in asynchronous events.</p>
+<p>protractor是一个端对端的测试框架，可以在浏览器里面进行自动化的执行任务和测试</p>
 <p>q</p>
-<p>While async is good for waterfalls and map operations, “q” is great for making promises. By that, we mean taking a normal callback function and wrapping it up in the “q” promise syntax. This lets us make promise chains involving asynchronous functions that normally use callbacks, a.k.a. callback hell.</p>
+<p>async是不错的瀑布楼和映射操作同时，“q”是不错的使用promises的库，通过它，我们意味着使用普通回调函数以及封装成“q”的promise语法。让我们像使用普通回调方式一样使用链式的异步函数，解决“callback hell”。</p>
 <p>request</p>
-<p>Every once in a while we need to make a manual HTTP request to an external server. We’ve always stuck to using this package for doing this kind of task since the dawn of NodeJS. Mostly however, the sdk’s for the external services we use do this for us, using “request” under the hood.</p>
+<p>每当一旦我们需要使用http请求来扩展服务时，我们总是使用这个包即时在NodeJS初期，在内部使用扩展服务。</p>
 <p>slug</p>
-<p>This is the library that turns “Hello There” into “hello-there”, perfect for making dynamic titles into URL-friendly links. We use this for taking the names of our venues and making that unique link that you can share with your buddies so they know where to find you.</p>
+<p>这个是一个转化“Hello There” 到“hello-there”的库，完美的动态的转化标题成友好的链接。</p>
 <p>stripe</p>
-<p>Time to get paid. Stripe is our payment processor for credit cards. They’re nice enough to store customer credit card information in a PCI-compliant way so we don’t have to. We use their sdk to put cards on file and make charges.</p>
+<p>值得时间考验。Stripe是我们的信用卡支付流程。这个足够好来存储用户的信用卡信息以PCI-compliant方式。我们使用它们的SDK存储卡到文件和支付。</p>
 <p>supertest-as-promised</p>
 <p>This is the core of our integration tests. Using promises we can easily expect a certain response status code, while also using the response data in the next step of the test. We use this with chai.</p>
 <p>Welp, there you have it folks. Our list of goodies. We’re always open to questions, comments, and suggestions. Please be gentle :)</p>
+<p>这个是我们核心的智能测试。使用promises让我么会能很容易导出某种响应状态码，同时使用响应数据在下一次测试中，我们在chai里使用。</p>
+<p>这样啦，你有了我们的好东西的清单。我们总是会开放的问题，意见和建议。请温和些:)</p>
 <p>Dave<br>Co-founder &amp; CEO, Croissant</p>
 
       
