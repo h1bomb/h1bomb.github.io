@@ -55,77 +55,70 @@
     <header>
       
   
-    <h1 class="title"><a href="/2015/09/10/7-Reasons-to-Upgrade-to-Node-v4-Now/">7 Reasons to Upgrade to Node v4 Now</a></h1>
+    <h1 class="title"><a href="/2015/09/11/7-Reasons-to-Upgrade-to-Node-v4-Now/">现在升级到Node V4的七个理由</a></h1>
   
 
       
-      <time datetime="2015-09-10T15:42:08.000Z">Sep 10 2015</time>
+      <time datetime="2015-09-11T00:56:25.000Z">Sep 11 2015</time>
       
     </header>
     <div class="entry">
       
-        <p>Today Node v4 got released. It is the first stable release after the io.js merge and thus brings us a bunch of shiny, new ES6 language additions. While there’s already a great overview of the ES6 additions, this post shows how to make use of them!</p>
-<p>In particular, I’m going to address the following additions:</p>
-<p>Template Strings<br>Classes<br>Arrow Functions<br>Object Literals<br>Promises<br>String Methods<br>let and const</p>
-<ol>
-<li>Template Strings</li>
-</ol>
-<p>If you ever tried to create a multiline string in JavaScript, you probably ended up doing something similar to this:</p>
+        <p>原地址：<a href="http://www.cli-nerd.com/2015/09/09/7-reasons-to-upgrade-to-node-v4-now.html" target="_blank" rel="external">http://www.cli-nerd.com/2015/09/09/7-reasons-to-upgrade-to-node-v4-now.html</a></p>
+<p>今天<a href="https://nodejs.org/en/blog/release/v4.0.0/" target="_blank" rel="external">Node v4</a>发布了。这是第一个在io.js合并后的<br>第一个稳定版本，给我们带来了一堆亮点，如新的ES6语法的添加。虽然有已经增加了很好的ES6的描述，但是这篇文章展示了如何使用它们！</p>
+<p>特别是，我要去以下ES6补充的地址看看：</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/template_strings" target="_blank" rel="external">Template Strings</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes" target="_blank" rel="external">Classes</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank" rel="external">Arrow Functions</a><br><a href="https://github.com/lukehoban/es6features#enhanced-object-literals" target="_blank" rel="external">Object Literals</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank" rel="external">Promises</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript/ECMAScript_6_support_in_Mozilla#Additions_to_the_String_object" target="_blank" rel="external">String Methods</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let" target="_blank" rel="external">let and const</a></p>
+<h2 id="1-_Template_Strings(模板字符串)">1. Template Strings(模板字符串)</h2>
+<p>如果你要用Javascript创建多行字符串，你或许会像下面的做法：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> message = [</div><div class="line">    <span class="string">'The quick brown fox'</span>,</div><div class="line">    <span class="string">'jumps over'</span>,</div><div class="line">    <span class="string">'the lazy dog'</span></div><div class="line">].join(<span class="string">'\n'</span>);</div></pre></td></tr></table></figure>
 
-<p>While this works for a small amount of text, it gets messy for a couple of sentences. Therefore, a clever developer came up with a hack called multiline:</p>
+<p>虽然这适用于少量的文字，但会多个语句变得混乱。因此，聪明的开发者想出了一个叫hack called multiline的模块：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> multiline = <span class="built_in">require</span>(<span class="string">'multiline'</span>);</div><div class="line"><span class="keyword">var</span> message = multiline(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{<span class="comment">/*</span></div><div class="line">    The quick brown fox</div><div class="line">    jumps over</div><div class="line">    the lazy dog</div><div class="line">*/});</div></pre></td></tr></table></figure>
 
-<p>Luckily, ES6 brings us template strings:</p>
+<p>幸运的是，ES6给我们带来了模板字符串：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> message = `</div><div class="line">    The quick brown fox</div><div class="line">        jumps over</div><div class="line">        the lazy dog</div><div class="line">`;</div></pre></td></tr></table></figure>
 
-<p>In addition, they also bring us string interpolation:</p>
+<p>在这个特性里，还可以进行字符串的赋值操作</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> name = <span class="string">'Schroedinger'</span>;</div><div class="line"></div><div class="line"><span class="comment">// stop doing this ...</span></div><div class="line"><span class="keyword">var</span> message = <span class="string">'Hello '</span> + name + <span class="string">', how is your cat?'</span>;</div><div class="line"><span class="keyword">var</span> message = [<span class="string">'Hello '</span>, name, <span class="string">', how is your cat?'</span>].join(<span class="string">''</span>);</div><div class="line"><span class="keyword">var</span> message = <span class="built_in">require</span>(<span class="string">'util'</span>).format(<span class="string">'Hello %s, how is your cat?'</span>, name);</div><div class="line"></div><div class="line"><span class="comment">// and instead do that ...</span></div><div class="line"><span class="keyword">var</span> message = `Hello ${name}, how is your cat?`;</div></pre></td></tr></table></figure>
 
-<p>Check out the details about template strings on MDN.</p>
-<ol>
-<li>Classes</li>
-</ol>
-<p>Defining classes in ES5 looks somewhat strange and definitely takes time to get used to:</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/template_strings" target="_blank" rel="external">查看更多template strings的详情在MDN</a>.</p>
+<h2 id="2-_Classes（类）">2. Classes（类）</h2>
+<p>定义类ES5看起来有些奇怪，还需要一定的时间去习惯：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Pet = <span class="function"><span class="keyword">function</span> <span class="params">(name)</span> </span>{</div><div class="line">    <span class="keyword">this</span>._name = name;</div><div class="line">};</div><div class="line"></div><div class="line">Pet.prototype.sayHello = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'*scratch*'</span>);</div><div class="line">};</div><div class="line"></div><div class="line"><span class="built_in">Object</span>.defineProperty(Pet.prototype, <span class="string">'name'</span>, {</div><div class="line">  get: <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._name;</div><div class="line">  }</div><div class="line">});</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">var</span> Cat = <span class="function"><span class="keyword">function</span> <span class="params">(name)</span> </span>{</div><div class="line">    Pet.call(<span class="keyword">this</span>, name);</div><div class="line">};</div><div class="line"></div><div class="line"><span class="built_in">require</span>(<span class="string">'util'</span>).inherits(Cat, Pet);</div><div class="line"></div><div class="line">Cat.prototype.sayHello = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    Pet.prototype.sayHello.call(<span class="keyword">this</span>);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'miaaaauw'</span>);</div><div class="line">};</div></pre></td></tr></table></figure>
 
 
-<p>Luckily we can now use the new ES6 syntax in Node:</p>
+<p>幸运的是，在Node中我们可以使用新的ES6语法</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Pet {</div><div class="line">    constructor(name) {</div><div class="line">        <span class="keyword">this</span>._name = name;</div><div class="line">    }</div><div class="line">    sayHello() {</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'*scratch*'</span>);</div><div class="line">    }</div><div class="line">    get name() {</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>._name;</div><div class="line">    }</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">class</span> Cat extends Pet {</div><div class="line">    constructor(name) {</div><div class="line">        super(name);</div><div class="line">    }</div><div class="line">    sayHello() {</div><div class="line">        super.sayHello();</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'miaaaauw'</span>);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p>An extends keyword, constructors, calls to the super class and properties. How awesome? But there’s more. Check out the comprehensive guide on MDN</p>
-<ol>
-<li>Arrow Functions</li>
-</ol>
-<p>The dynamic binding of this on function invocation always causes some confusion, and people worked around it in a couple of ways:</p>
+<p>一个extends关键字，constructors，调用父类和属性。多好？<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes" target="_blank" rel="external">更多在MDN有完整的指南</a></p>
+<h2 id="3-_Arrow_Functions(箭头函数)">3. Arrow Functions(箭头函数)</h2>
+<p>动态的绑定函数调用的结合总是会引起一些混乱，人们在多个方面围绕它的工作：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Cat.prototype.notifyListeners = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</div><div class="line">    <span class="keyword">this</span>._listeners.forEach(<span class="function"><span class="keyword">function</span> <span class="params">(listener)</span> </span>{</div><div class="line">        self.notifyListener(listener);</div><div class="line">    });</div><div class="line">};</div><div class="line">Cat.prototype.notifyListeners = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>._listeners.forEach(<span class="function"><span class="keyword">function</span> <span class="params">(listener)</span> </span>{</div><div class="line">        <span class="keyword">this</span>.notifyListener(listener);</div><div class="line">    }.bind(<span class="keyword">this</span>));</div><div class="line">};</div></pre></td></tr></table></figure>
 
-<p>Now you can just use fat arrow functions:</p>
+<p>现在只需要使用箭头函数：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Cat.prototype.notifyListeners = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>._listeners.forEach((listener) =&gt; {</div><div class="line">        <span class="keyword">this</span>.notifyListener(listener);</div><div class="line">    });</div><div class="line">};</div></pre></td></tr></table></figure>
 
-<p>Check out arrow functions in more detail.</p>
-<ol>
-<li>Object Literals</li>
-</ol>
-<p>When using object literals, you can now use a nice little shortcut:</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank" rel="external">查看arrow functions更多详情</a>.</p>
+<h2 id="4-_Object_Literals(对象直接量)">4. Object Literals(对象直接量)</h2>
+<p>当使用对象直接量，你可以使用很不错的快捷方式：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> age = <span class="number">10</span>, name = <span class="string">'Petsy'</span>, size = <span class="number">32</span>;</div><div class="line"></div><div class="line"><span class="comment">// instead of this ...</span></div><div class="line"><span class="keyword">var</span> cat = {</div><div class="line">    age: age,</div><div class="line">    name: name,</div><div class="line">    size: size</div><div class="line">};</div><div class="line"></div><div class="line"><span class="comment">// ... do this ...</span></div><div class="line"><span class="keyword">var</span> cat = {</div><div class="line">    age,</div><div class="line">    name,</div><div class="line">    size</div><div class="line">};</div></pre></td></tr></table></figure>
 
-<p>Additionally, you can now easily add functions to your object literals.</p>
-<ol>
-<li>Promises</li>
-</ol>
-<p>Instead of depending on third party libraries like bluebird or Q, you can now use native promises. Those expose the following apis:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span> Promise(<span class="function"><span class="keyword">function</span> <span class="params">(resolve, reject)</span> </span>{});</div><div class="line"><span class="keyword">var</span> p2 = Promise.resolve(<span class="number">20</span>);</div><div class="line"><span class="keyword">var</span> p3 = Promise.reject(<span class="keyword">new</span> <span class="built_in">Error</span>());</div><div class="line"><span class="keyword">var</span> p4 = Promise.all(p1, p2);</div><div class="line"><span class="keyword">var</span> p5 = Promise.race(p1, p2);</div><div class="line"></div><div class="line"><span class="comment">// and obviously</span></div><div class="line">p1.then(() =&gt; {}).catch(() =&gt; {});</div><div class="line"><span class="number">6.</span> <span class="built_in">String</span> Methods</div></pre></td></tr></table></figure>
+<p>此外，您现在可以轻松的<a href="https://github.com/lukehoban/es6features#enhanced-object-literals" target="_blank" rel="external">将函数添加到您的对象直接量上</a>。</p>
+<h2 id="5-_Promises">5. Promises</h2>
+<p>可以替换掉用第三方的像bluebird和Q的依赖，直接使用原生的promises。就像如下的api：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> p1 = <span class="keyword">new</span> Promise(<span class="function"><span class="keyword">function</span> <span class="params">(resolve, reject)</span> </span>{});</div><div class="line"><span class="keyword">var</span> p2 = Promise.resolve(<span class="number">20</span>);</div><div class="line"><span class="keyword">var</span> p3 = Promise.reject(<span class="keyword">new</span> <span class="built_in">Error</span>());</div><div class="line"><span class="keyword">var</span> p4 = Promise.all(p1, p2);</div><div class="line"><span class="keyword">var</span> p5 = Promise.race(p1, p2);</div><div class="line"></div><div class="line"><span class="comment">// and obviously</span></div><div class="line">p1.then(() =&gt; {}).catch(() =&gt; {});</div></pre></td></tr></table></figure>
 
-<p>We got a couple of new string utility functions too:</p>
+<h2 id="6-_String_Methods">6. String Methods</h2>
+<p>我们还可以使用一些新的字符串工具方法：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// replace `indexOf()` in a number of cases</span></div><div class="line">name.startsWith(<span class="string">'a'</span>)</div><div class="line">name.endsWith(<span class="string">'c'</span>);</div><div class="line">name.includes(<span class="string">'b'</span>);</div><div class="line"></div><div class="line"><span class="comment">// repeat the string three times</span></div><div class="line">name.repeat(<span class="number">3</span>);</div></pre></td></tr></table></figure>
 
-<p>Go and tell those ruby kids! Strings also support better unicode handling now.</p>
-<ol>
-<li>let and const</li>
-</ol>
-<p>Guess the return value of the following function call:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> x = <span class="number">20</span>;</div><div class="line">(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">if</span> (x === <span class="number">20</span>) {</div><div class="line">        <span class="keyword">var</span> x = <span class="number">30</span>;</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> x;</div><div class="line">}()); <span class="comment">// -&gt; undefined</span></div><div class="line">Yep, <span class="literal">undefined</span>. Replace <span class="keyword">var</span> <span class="keyword">with</span> <span class="keyword">let</span> and you get the expected behaviour:</div><div class="line"></div><div class="line"><span class="keyword">let</span> x = <span class="number">20</span>;</div><div class="line">(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">if</span> (x === <span class="number">20</span>) {</div><div class="line">        <span class="keyword">let</span> x = <span class="number">30</span>;</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> x;</div><div class="line">}()); <span class="comment">// -&gt; 20</span></div></pre></td></tr></table></figure>
+<p>去告诉那些写ruby的孩子！字符串现在还更好的支持unicode的处理。</p>
+<h2 id="7-_let_and_const">7. let and const</h2>
+<p>猜下这个在如下函数调用后返回的值：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> x = <span class="number">20</span>;</div><div class="line">(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">if</span> (x === <span class="number">20</span>) {</div><div class="line">        <span class="keyword">var</span> x = <span class="number">30</span>;</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> x;</div><div class="line">}()); <span class="comment">// -&gt; undefined</span></div></pre></td></tr></table></figure>
+
+<p>是的，undefined。替换掉var，使用let你可以保证预期的结果：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> x = <span class="number">20</span>;</div><div class="line">(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">if</span> (x === <span class="number">20</span>) {</div><div class="line">        <span class="keyword">let</span> x = <span class="number">30</span>;</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> x;</div><div class="line">}()); <span class="comment">// -&gt; 20</span></div></pre></td></tr></table></figure>
 
 <p>The reason: var is function-scoped, while let is block-scoped (which is what most people expect). Because of that, it is save to say that let is the new var. You can get more details about let on MDN.</p>
 <p>Bonus: Node now supports the const keyword, which prevents you from reassigning a different value to the same reference:</p>
@@ -151,11 +144,11 @@
     <header>
       
   
-    <h1 class="title"><a href="/2015/09/10/40-npm-modules-we-can-t-live-without/">40个我们不可或缺的NPM包[译]</a></h1>
+    <h1 class="title"><a href="/2015/09/11/40-npm-modules-we-can-t-live-without/">40个我们不可或缺的NPM包[译]</a></h1>
   
 
       
-      <time datetime="2015-09-10T15:36:44.000Z">Sep 10 2015</time>
+      <time datetime="2015-09-11T00:15:14.000Z">Sep 11 2015</time>
       
     </header>
     <div class="entry">
@@ -242,10 +235,8 @@
 <p>stripe</p>
 <p>值得时间考验。Stripe是我们的信用卡支付流程。这个足够好来存储用户的信用卡信息以PCI-compliant方式。我们使用它们的SDK存储卡到文件和支付。</p>
 <p>supertest-as-promised</p>
-<p>This is the core of our integration tests. Using promises we can easily expect a certain response status code, while also using the response data in the next step of the test. We use this with chai.</p>
-<p>Welp, there you have it folks. Our list of goodies. We’re always open to questions, comments, and suggestions. Please be gentle :)</p>
 <p>这个是我们核心的智能测试。使用promises让我么会能很容易导出某种响应状态码，同时使用响应数据在下一次测试中，我们在chai里使用。</p>
-<p>这样啦，你有了我们的好东西的清单。我们总是会开放的问题，意见和建议。请温和些:)</p>
+<p>这样啦，你有了我们的好东西的清单。我们总是会开放的问题，意见和建议。请友善些:)</p>
 <p>Dave<br>Co-founder &amp; CEO, Croissant</p>
 
       
