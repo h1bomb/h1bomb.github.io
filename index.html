@@ -55,11 +55,11 @@
     <header>
       
   
-    <h1 class="title"><a href="/2015/09/11/7-Reasons-to-Upgrade-to-Node-v4-Now/">现在升级到Node V4的七个理由</a></h1>
+    <h1 class="title"><a href="/2015/09/12/7-Reasons-to-Upgrade-to-Node-v4-Now/">现在升级到Node V4的七个理由</a></h1>
   
 
       
-      <time datetime="2015-09-11T00:56:25.000Z">Sep 11 2015</time>
+      <time datetime="2015-09-12T15:36:53.000Z">Sep 12 2015</time>
       
     </header>
     <div class="entry">
@@ -120,13 +120,13 @@
 <p>是的，undefined。替换掉var，使用let你可以保证预期的结果：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> x = <span class="number">20</span>;</div><div class="line">(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">if</span> (x === <span class="number">20</span>) {</div><div class="line">        <span class="keyword">let</span> x = <span class="number">30</span>;</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> x;</div><div class="line">}()); <span class="comment">// -&gt; 20</span></div></pre></td></tr></table></figure>
 
-<p>The reason: var is function-scoped, while let is block-scoped (which is what most people expect). Because of that, it is save to say that let is the new var. You can get more details about let on MDN.</p>
-<p>Bonus: Node now supports the const keyword, which prevents you from reassigning a different value to the same reference:</p>
+<p>理由是：var是函数作用域级的，然而let是块作用域级别的（这是人们所希望）。因为这个，说let是安全的var。<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let" target="_blank" rel="external">你可以在MDN上获取更多关于let的信息</a>。</p>
+<p>新增：Node现在支持const关键字，从而阻止您重新赋给一个不同的值相同的引用：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> MY_CONST = <span class="number">42</span>; <span class="comment">// no, no</span></div><div class="line"><span class="keyword">const</span> MY_CONST = <span class="number">42</span>; <span class="comment">// yes, yes</span></div><div class="line"></div><div class="line">MY_CONST = <span class="number">10</span> <span class="comment">// with const, this is no longer possible</span></div></pre></td></tr></table></figure>
 
-<p>Wrapping Up</p>
-<p>Node v4 brings even more ES6 additions, but I hope that these seven examples already convinced you to update and use the latest version.</p>
-<p>There are many more language features (e.g. maps/sets, symbols and generators, just to mention a few more). Make sure that you also check the overview of ES6 additions to Node v4. Happy updating!</p>
+<p>综述所述</p>
+<p>Node v4带来了更多的ES6的特性，同时我也希望这些7个例子已经使你信服升级和使用最新版本了。</p>
+<p>这些更多的语言特性（像 maps/sets, symbols , generators,等）。请确保你已经查看过ES6补充的NodeV4概述。快乐升级！</p>
 
       
     </div>
