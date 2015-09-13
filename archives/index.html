@@ -58,6 +58,61 @@
     <header>
       
   
+    <h1 class="title"><a href="/2015/09/13/Render-HTML-From-Client-Or-Server/">服务端或客户端生成HTML的设计思想</a></h1>
+  
+
+      
+      <time datetime="2015-09-13T03:53:49.000Z">Sep 13 2015</time>
+      
+    </header>
+    <div class="entry">
+      
+        <p>如果说web前端主要是由：HTML,CSS,JavaScript这些技术的组合，那么HTML的生成，可以由服务端或者客户端去渲染，取决于数据和HTML的绑定在哪个端去执行。</p>
+<p>当是SPA（Single Page Application）形态的应用时：天然的使HTML的生成或则说DOM生成可以由前端完成，大量的路由逻辑，界面逻辑都在浏览器端完成。主要是服务端提供“服务接口+数据响应”，浏览器端调用“服务接口”，数据绑定到视图渲染（可以是DOM生成或者HTML生成并修改DOM），以及路由视图的跳转。</p>
+<p>SPA有一个问题需要解决，那就是如何做SEO，主要问题是两个：一个是URL友好，一个响应HTML结构语义化。</p>
+<p>解决办法：</p>
+<ol>
+<li>url友好</li>
+</ol>
+<p>url友好，在SPA的大部分前端界面跳转都相对映射的URL（当然如果使用一些前端框架也实现了URL变化，如Angular，React-Router，vue-router），除非把url的变化考虑进去，使用Hash，或者HMTL5的history的push state接口，来改变url。</p>
+<p>现有的大部分SPA的前端框架都有前端url路由功能，所以实现这个，难度不大。</p>
+<ol>
+<li>响应HTML结构语义化 </li>
+</ol>
+<p>如果数据在客户端绑定并渲染视图，在对于大多数搜索引擎的爬虫无法理解在客户端渲染的DOM，所以最好在服务端生成HTML。</p>
+<p>针对SPA，如比较目前比较通用的有类似<a href="http://prerender.io/" target="_blank" rel="external">Prerender.io</a>，<a href="http://www.brombone.com/" target="_blank" rel="external">brombone</a>，<a href="http://www.seo4ajax.com/" target="_blank" rel="external">seojs</a>的服务，原理是：</p>
+<ul>
+<li>当一个搜索引擎的爬虫访问你的应用程序并且看到<code>&lt;meta name=&quot;fragment&quot; content=&quot;!&quot;&gt;</code>时，它会在你的URL中添加一个<code>?_escaped_fragment_=tag</code>。</li>
+<li>你的服务器将会拦截这个请求，并把它发送给一个用来处理这个特殊的爬虫请求的中间件。在这篇文章中，我们选用Prerender.io，因此，下一步是针对Prerender.io的。</li>
+<li>Prerender.io 将会检查请求的页面是否有一个现存的快照（或者缓存的页面），如果有，它会将这个页面响应给爬虫，如果没有的话，他会调用PhantomJS(一个服务端渲染DOM的中间键)来渲染这个完整页面，并将它响应给爬虫。</li>
+</ul>
+<p>优点：这个的做法的好处是和语言无关，比较解耦，可以和不同的后端语言结合使用。可以单独部署一组SEO的服务器来应对爬虫的访问，对于用户访问影响不大。</p>
+<p>缺点：PhantomJS在生成界面的时候，比较消耗服务器资源，同时时间较长，需要做生成界面的缓存，以及页面缓存的更新。</p>
+<p>SPA大量在现有互联网的使用，即将到来，只是现在囿于低版本IE浏览器的制约，约束在浏览器的发展。尽管现有前端框架都有优雅降级的做法，但是在大量低版本IE的用户面前，目前是无法大规模使用的。</p>
+<p>主要原因：</p>
+<ol>
+<li>低版本IE(6,7,8)对于ES5的支持(Object.defineProperty)，甚至ES6的支持。</li>
+<li>低版本IE(6,7,8)对CSS,DOM不是按照标准去理解的。</li>
+<li>低版本IE(6,7,8)JS引擎性能较差，对于重度依赖Javascript的SPA会有性能瓶颈或编码不慎会导致无故内存泄露。</li>
+</ol>
+<p>但是还是比较看好SPA在浏览器的发展，毕竟新版的IE，以及其他的现代浏览器已经不存在以上的问题了，只是时间问题了。</p>
+
+      
+    </div>
+    
+      
+    
+  </div>
+</article>
+
+
+
+
+<article class="post">
+  <div class="post-content">
+    <header>
+      
+  
     <h1 class="title"><a href="/2015/09/12/7-Reasons-to-Upgrade-to-Node-v4-Now/">现在升级到Node V4的七个理由</a></h1>
   
 
@@ -638,59 +693,6 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Point {</div><div class="line"></div><div class="line">  constructor(x, y) {</div><div class="line">    <span class="keyword">this</span>.x = x;</div><div class="line">    <span class="keyword">this</span>.y = y;</div><div class="line">  }</div><div class="line"></div><div class="line">  toString() {</div><div class="line">    <span class="keyword">return</span> <span class="string">'('</span> + <span class="keyword">this</span>.x + <span class="string">', '</span> + <span class="keyword">this</span>.y + <span class="string">')'</span>;</div><div class="line">  }</div><div class="line"></div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">class</span> ColorPoint extends Point {</div><div class="line"></div><div class="line">  constructor(x, y, color) {</div><div class="line">    super(x, y); </div><div class="line">    <span class="keyword">this</span>.color = color;</div><div class="line">  }</div><div class="line"></div><div class="line">  toString() {</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.color + <span class="string">' '</span> + super.toString(); </div><div class="line">  }</div><div class="line"></div><div class="line">}</div></pre></td></tr></table></figure>
 
 <p>显然es6的写法更加清晰，隐去了Javascript硬去使用prototype和call的实现细节。但是es6并没有完全按照Java ,C++面向对象的语法来实现，<br>只是对于原型继承的一个语法糖。</p>
-
-      
-    </div>
-    
-      
-    
-  </div>
-</article>
-
-
-
-
-<article class="post">
-  <div class="post-content">
-    <header>
-      
-  
-    <h1 class="title"><a href="/2015/05/27/node-inheritance-usage/">nodejs继承的用法</a></h1>
-  
-
-      
-      <time datetime="2015-05-27T02:28:26.000Z">May 27 2015</time>
-      
-    </header>
-    <div class="entry">
-      
-        <p>对于<a href="http://h1bomb.github.io/2015/05/22/node-inheritance/" target="_blank" rel="external">上一篇</a>,最后不明白的那块内容，今天在看<code>Object.assign</code>这个Polyfill实现里面有个方法<br><code>defineProperty</code>方法，里面也有</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">    enumerable: <span class="literal">false</span>,</div><div class="line">    configurable: <span class="literal">true</span>,</div><div class="line">    writable: <span class="literal">true</span>,</div><div class="line">    value:<span class="function"><span class="keyword">function</span><span class="params">()</span></span>{...}</div><div class="line">}</div></pre></td></tr></table></figure>
-
-<p>解释如下：</p>
-<blockquote>
-<p><strong>configurable</strong></p>
-<p>当且仅当这个属性描述符值为 true 时，该属性可能会改变，也可能会被从相应的对象删除。默认为 false。</p>
-<p><strong>enumerable</strong></p>
-<p>true 当且仅当该属性出现在相应的对象枚举属性中。默认为 false。<br>数据描述符同时具有以下可选键值：</p>
-<p><strong>value</strong></p>
-<p>与属性相关的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。默认为 undefined。</p>
-<p><strong>writable</strong></p>
-<p>true 当且仅当可能用 赋值运算符 改变与属性相关的值。默认为 false。</p>
-</blockquote>
-<p>另外,<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/create" target="_blank" rel="external">Object.create</a>也有说明，create方法的第二个参数的说明：</p>
-<blockquote>
-<p><strong>propertiesObject</strong></p>
-<p>一个对象值，可以包含若干个属性，属性名为新建对象的属性名，属性值为那个属性的属性描述符对象.</p>
-</blockquote>
-<p>第一次接触node继承，是在使用<code>events.EventEmitter</code>时接触的。<br>代码如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> util = <span class="built_in">require</span>(<span class="string">"util"</span>);  </div><div class="line"><span class="keyword">var</span> events = <span class="built_in">require</span>(<span class="string">"events"</span>);<span class="comment">//EventEmitter通过events模块来访问  </span></div><div class="line">  </div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyStream</span><span class="params">()</span> </span>{<span class="comment">//新建一个类  </span></div><div class="line">    events.EventEmitter.call(<span class="keyword">this</span>);  </div><div class="line">}  </div><div class="line">  </div><div class="line">util.inherits(MyStream, events.EventEmitter);</div></pre></td></tr></table></figure>
-
-<p>为什么需要Call父级构造函数呢？inherits方法无法继承父级构造函数的成员方法和变量吗？<br>是的，inherits方法只是把子级的构造函数的原型指向了父级的原型，也就是说，不是父级实例化后的对象<br>所以没有父级构造函数的成员。</p>
-<p>这样的好处是继承的方法只是继承了父级在prototype可以共享的方法和属性，降低了原型链的继承查找。<br>call则直接指向了父级构造函数，当实例化子级构造函数时，将父级的构造过程运用于子级。</p>
-<p>和之前讲的<a href="http://h1bomb.github.io/2015/05/21/JavaScript-inheritance2/" target="_blank" rel="external">混合方式</a>有点类似，但是从出发点来讲，<br>更清晰的区分了冒充和原型的信息共享。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">A</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.a = <span class="number">123</span>;</div><div class="line">}</div><div class="line"></div><div class="line">A.prototype.say = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.a;</div><div class="line">} </div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">B</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.b = <span class="number">456</span>;</div><div class="line">}</div><div class="line"></div><div class="line">B.prototype = A.prototype;</div><div class="line"></div><div class="line"><span class="keyword">var</span> b =  <span class="keyword">new</span> B;</div><div class="line"><span class="built_in">console</span>.log(b.say());<span class="comment">//undefined</span></div></pre></td></tr></table></figure>
-
 
       
     </div>

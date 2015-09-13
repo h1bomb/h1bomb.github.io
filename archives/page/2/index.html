@@ -58,6 +58,59 @@
     <header>
       
   
+    <h1 class="title"><a href="/2015/05/27/node-inheritance-usage/">nodejs继承的用法</a></h1>
+  
+
+      
+      <time datetime="2015-05-27T02:28:26.000Z">May 27 2015</time>
+      
+    </header>
+    <div class="entry">
+      
+        <p>对于<a href="http://h1bomb.github.io/2015/05/22/node-inheritance/" target="_blank" rel="external">上一篇</a>,最后不明白的那块内容，今天在看<code>Object.assign</code>这个Polyfill实现里面有个方法<br><code>defineProperty</code>方法，里面也有</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">    enumerable: <span class="literal">false</span>,</div><div class="line">    configurable: <span class="literal">true</span>,</div><div class="line">    writable: <span class="literal">true</span>,</div><div class="line">    value:<span class="function"><span class="keyword">function</span><span class="params">()</span></span>{...}</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>解释如下：</p>
+<blockquote>
+<p><strong>configurable</strong></p>
+<p>当且仅当这个属性描述符值为 true 时，该属性可能会改变，也可能会被从相应的对象删除。默认为 false。</p>
+<p><strong>enumerable</strong></p>
+<p>true 当且仅当该属性出现在相应的对象枚举属性中。默认为 false。<br>数据描述符同时具有以下可选键值：</p>
+<p><strong>value</strong></p>
+<p>与属性相关的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。默认为 undefined。</p>
+<p><strong>writable</strong></p>
+<p>true 当且仅当可能用 赋值运算符 改变与属性相关的值。默认为 false。</p>
+</blockquote>
+<p>另外,<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/create" target="_blank" rel="external">Object.create</a>也有说明，create方法的第二个参数的说明：</p>
+<blockquote>
+<p><strong>propertiesObject</strong></p>
+<p>一个对象值，可以包含若干个属性，属性名为新建对象的属性名，属性值为那个属性的属性描述符对象.</p>
+</blockquote>
+<p>第一次接触node继承，是在使用<code>events.EventEmitter</code>时接触的。<br>代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> util = <span class="built_in">require</span>(<span class="string">"util"</span>);  </div><div class="line"><span class="keyword">var</span> events = <span class="built_in">require</span>(<span class="string">"events"</span>);<span class="comment">//EventEmitter通过events模块来访问  </span></div><div class="line">  </div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyStream</span><span class="params">()</span> </span>{<span class="comment">//新建一个类  </span></div><div class="line">    events.EventEmitter.call(<span class="keyword">this</span>);  </div><div class="line">}  </div><div class="line">  </div><div class="line">util.inherits(MyStream, events.EventEmitter);</div></pre></td></tr></table></figure>
+
+<p>为什么需要Call父级构造函数呢？inherits方法无法继承父级构造函数的成员方法和变量吗？<br>是的，inherits方法只是把子级的构造函数的原型指向了父级的原型，也就是说，不是父级实例化后的对象<br>所以没有父级构造函数的成员。</p>
+<p>这样的好处是继承的方法只是继承了父级在prototype可以共享的方法和属性，降低了原型链的继承查找。<br>call则直接指向了父级构造函数，当实例化子级构造函数时，将父级的构造过程运用于子级。</p>
+<p>和之前讲的<a href="http://h1bomb.github.io/2015/05/21/JavaScript-inheritance2/" target="_blank" rel="external">混合方式</a>有点类似，但是从出发点来讲，<br>更清晰的区分了冒充和原型的信息共享。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">A</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.a = <span class="number">123</span>;</div><div class="line">}</div><div class="line"></div><div class="line">A.prototype.say = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.a;</div><div class="line">} </div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">B</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.b = <span class="number">456</span>;</div><div class="line">}</div><div class="line"></div><div class="line">B.prototype = A.prototype;</div><div class="line"></div><div class="line"><span class="keyword">var</span> b =  <span class="keyword">new</span> B;</div><div class="line"><span class="built_in">console</span>.log(b.say());<span class="comment">//undefined</span></div></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+      
+    
+  </div>
+</article>
+
+
+
+
+<article class="post">
+  <div class="post-content">
+    <header>
+      
+  
     <h1 class="title"><a href="/2015/05/24/node-inheritance/">nodejs继承实现</a></h1>
   
 

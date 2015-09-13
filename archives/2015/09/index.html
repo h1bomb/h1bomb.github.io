@@ -58,6 +58,61 @@
     <header>
       
   
+    <h1 class="title"><a href="/2015/09/13/Render-HTML-From-Client-Or-Server/">服务端或客户端生成HTML的设计思想</a></h1>
+  
+
+      
+      <time datetime="2015-09-13T03:53:49.000Z">Sep 13 2015</time>
+      
+    </header>
+    <div class="entry">
+      
+        <p>如果说web前端主要是由：HTML,CSS,JavaScript这些技术的组合，那么HTML的生成，可以由服务端或者客户端去渲染，取决于数据和HTML的绑定在哪个端去执行。</p>
+<p>当是SPA（Single Page Application）形态的应用时：天然的使HTML的生成或则说DOM生成可以由前端完成，大量的路由逻辑，界面逻辑都在浏览器端完成。主要是服务端提供“服务接口+数据响应”，浏览器端调用“服务接口”，数据绑定到视图渲染（可以是DOM生成或者HTML生成并修改DOM），以及路由视图的跳转。</p>
+<p>SPA有一个问题需要解决，那就是如何做SEO，主要问题是两个：一个是URL友好，一个响应HTML结构语义化。</p>
+<p>解决办法：</p>
+<ol>
+<li>url友好</li>
+</ol>
+<p>url友好，在SPA的大部分前端界面跳转都相对映射的URL（当然如果使用一些前端框架也实现了URL变化，如Angular，React-Router，vue-router），除非把url的变化考虑进去，使用Hash，或者HMTL5的history的push state接口，来改变url。</p>
+<p>现有的大部分SPA的前端框架都有前端url路由功能，所以实现这个，难度不大。</p>
+<ol>
+<li>响应HTML结构语义化 </li>
+</ol>
+<p>如果数据在客户端绑定并渲染视图，在对于大多数搜索引擎的爬虫无法理解在客户端渲染的DOM，所以最好在服务端生成HTML。</p>
+<p>针对SPA，如比较目前比较通用的有类似<a href="http://prerender.io/" target="_blank" rel="external">Prerender.io</a>，<a href="http://www.brombone.com/" target="_blank" rel="external">brombone</a>，<a href="http://www.seo4ajax.com/" target="_blank" rel="external">seojs</a>的服务，原理是：</p>
+<ul>
+<li>当一个搜索引擎的爬虫访问你的应用程序并且看到<code>&lt;meta name=&quot;fragment&quot; content=&quot;!&quot;&gt;</code>时，它会在你的URL中添加一个<code>?_escaped_fragment_=tag</code>。</li>
+<li>你的服务器将会拦截这个请求，并把它发送给一个用来处理这个特殊的爬虫请求的中间件。在这篇文章中，我们选用Prerender.io，因此，下一步是针对Prerender.io的。</li>
+<li>Prerender.io 将会检查请求的页面是否有一个现存的快照（或者缓存的页面），如果有，它会将这个页面响应给爬虫，如果没有的话，他会调用PhantomJS(一个服务端渲染DOM的中间键)来渲染这个完整页面，并将它响应给爬虫。</li>
+</ul>
+<p>优点：这个的做法的好处是和语言无关，比较解耦，可以和不同的后端语言结合使用。可以单独部署一组SEO的服务器来应对爬虫的访问，对于用户访问影响不大。</p>
+<p>缺点：PhantomJS在生成界面的时候，比较消耗服务器资源，同时时间较长，需要做生成界面的缓存，以及页面缓存的更新。</p>
+<p>SPA大量在现有互联网的使用，即将到来，只是现在囿于低版本IE浏览器的制约，约束在浏览器的发展。尽管现有前端框架都有优雅降级的做法，但是在大量低版本IE的用户面前，目前是无法大规模使用的。</p>
+<p>主要原因：</p>
+<ol>
+<li>低版本IE(6,7,8)对于ES5的支持(Object.defineProperty)，甚至ES6的支持。</li>
+<li>低版本IE(6,7,8)对CSS,DOM不是按照标准去理解的。</li>
+<li>低版本IE(6,7,8)JS引擎性能较差，对于重度依赖Javascript的SPA会有性能瓶颈或编码不慎会导致无故内存泄露。</li>
+</ol>
+<p>但是还是比较看好SPA在浏览器的发展，毕竟新版的IE，以及其他的现代浏览器已经不存在以上的问题了，只是时间问题了。</p>
+
+      
+    </div>
+    
+      
+    
+  </div>
+</article>
+
+
+
+
+<article class="post">
+  <div class="post-content">
+    <header>
+      
+  
     <h1 class="title"><a href="/2015/09/12/7-Reasons-to-Upgrade-to-Node-v4-Now/">现在升级到Node V4的七个理由</a></h1>
   
 
