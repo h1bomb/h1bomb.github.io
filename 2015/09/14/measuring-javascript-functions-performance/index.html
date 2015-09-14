@@ -7,7 +7,7 @@
   <meta name="author" content="H1bomb">
   
   <meta name="description" content="原地址:http://www.sitepoint.com/measuring-javascript-functions-performance
-Performance has always played a crucial part in software. On the web, performa">
+性能总是软件中扮演了重要的角色。在网络上，性能是尤为重要，如果我们提供缓慢的网页给用户，我们的用户可以轻松更改网站去访问我们的竞争对手的网站。作为一个专业的">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -61,13 +61,13 @@ Performance has always played a crucial part in software. On the web, performa">
   
 
       
-      <time datetime="2015-09-06T00:49:32.000Z">Sep 6 2015</time>
+      <time datetime="2015-09-14T00:58:58.000Z">Sep 14 2015</time>
       
     </header>
     <div class="entry">
       
         <p>原地址:<a href="http://www.sitepoint.com/measuring-javascript-functions-performance/" target="_blank" rel="external">http://www.sitepoint.com/measuring-javascript-functions-performance</a></p>
-<p>Performance has always played a crucial part in software. On the web, performance is even more important as our users can easily change website and visit one of our competitors if we offer them slow pages. As professional web developers, we have to take this issue into account. A lot of old web performance optimization best practices, such as minimizing requests, using a CDN and not writing rendering blocking code, still apply today. However, as more and more web apps are using JavaScript, it’s important to verify that our code is fast.</p>
+<p>性能总是软件中扮演了重要的角色。在网络上，性能是尤为重要，如果我们提供缓慢的网页给用户，我们的用户可以轻松更改网站去访问我们的竞争对手的网站。作为一个专业的web开发者，我们不得不把这个问题考虑在内。很多老的网络性能优化的最佳实践，就像请求最小化，使用CDN，不写渲染代码块，如今还是管用的。然而，越来越多的web应用在使用Javascript，验证我们的代码是快的是很重要的。</p>
 <p>Suppose that you have a working function but you suspect it’s not as fast as it could be, and you have a plan to improve it. How do you prove this assumption? What’s the best practice for testing the performance of JavaScript functions today? Generally, the best way to achieve this task is to use the built-in <code>performance.now()</code> function and measure the time before and after your function executes.</p>
 <p>In this article we’ll discuss how to measure code execution time and techniques to avoid some common pitfalls.</p>
 <p><code>Performance.now()</code><br>The High Resolution Time API offers a function, named <code>now()</code> that returns a DOMHighResTimeStamp object. It’s a floating point number that reflects the current time in milliseconds accurate to a thousandth of a millisecond. Individually, the number doesn’t add much value to your analysis, but a difference between two such numbers gives an accurate description of how much time has passed.</p>
