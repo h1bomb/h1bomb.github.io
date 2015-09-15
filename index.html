@@ -55,20 +55,20 @@
     <header>
       
   
-    <h1 class="title"><a href="/2015/09/14/measuring-javascript-functions-performance/">测量javascript函数的性能[译]</a></h1>
+    <h1 class="title"><a href="/2015/09/15/measuring-javascript-functions-performance/">测量javascript函数的性能[译]</a></h1>
   
 
       
-      <time datetime="2015-09-14T00:58:58.000Z">Sep 14 2015</time>
+      <time datetime="2015-09-15T00:48:21.000Z">Sep 15 2015</time>
       
     </header>
     <div class="entry">
       
         <p>原地址:<a href="http://www.sitepoint.com/measuring-javascript-functions-performance/" target="_blank" rel="external">http://www.sitepoint.com/measuring-javascript-functions-performance</a></p>
 <p>性能总是软件中扮演了重要的角色。在网络上，性能是尤为重要，如果我们提供缓慢的网页给用户，我们的用户可以轻松更改网站去访问我们的竞争对手的网站。作为一个专业的web开发者，我们不得不把这个问题考虑在内。很多老的网络性能优化的最佳实践，就像请求最小化，使用CDN，不写渲染代码块，如今还是管用的。然而，越来越多的web应用在使用Javascript，验证我们的代码是快的是很重要的。</p>
-<p>Suppose that you have a working function but you suspect it’s not as fast as it could be, and you have a plan to improve it. How do you prove this assumption? What’s the best practice for testing the performance of JavaScript functions today? Generally, the best way to achieve this task is to use the built-in <code>performance.now()</code> function and measure the time before and after your function executes.</p>
-<p>In this article we’ll discuss how to measure code execution time and techniques to avoid some common pitfalls.</p>
-<p><code>Performance.now()</code><br>The High Resolution Time API offers a function, named <code>now()</code> that returns a DOMHighResTimeStamp object. It’s a floating point number that reflects the current time in milliseconds accurate to a thousandth of a millisecond. Individually, the number doesn’t add much value to your analysis, but a difference between two such numbers gives an accurate description of how much time has passed.</p>
+<p>假如你有一个正在运行的函数，但是你怀疑这个函数运行没有足够快，同时你计划着要改进这个函数。如何证明你的假设呢？什么是当今测试函数性能的最贱实践呢？一般来说，最好实现这个任务的方式是使用函数内建的<code>performance.now()</code>来测量在你执行函数前后的时间。</p>
+<p>在这篇文章我们将会讨论如何测量代码执行时间和避免一些常见的坑的技术。</p>
+<p><code>Performance.now()</code><br>高精度计时接口提供的一个方法，名字叫<code>now()</code>的可以返回一个DOM高精度时间戳对象。提供了一个浮点小数反映当前时间毫秒到毫秒的千分之一的时间戳。分别，这些数据没有添加过多的值来提供你分析，但是两个不同的数字之间的差值可以描述所消耗多少时间。</p>
 <p>In addition to the fact that it is more accurate than the built-in Date object, it’s also “monotonic”. That means, in simple terms, that it’s not affected by the system (e.g. your laptop OS) periodically correcting the system time. In even simpler terms, defining two instances of Date and calculating the difference isn’t representative of the time that has passed.</p>
 <p>The mathematical definition of “monotonic” is (of a function or quantity) varying in such a way that it either never decreases or never increases.</p>
 <p>Another way of explaining it, is by trying to imagine using it around the times of the year when the clocks go forward or go back. For example, when the clocks in your country all agree to skip an hour for the sake of maximizing daytime sunshine. If you were to make a Date instance before clocks go back an hour, and another Date instance afterwards, looking at the difference it would say something like “1 hour and 3 seconds and 123 milliseconds”. With two instances of performance.now() the difference would be “3 seconds 123 milliseconds and 456789 thousands of a millisecond”.</p>
