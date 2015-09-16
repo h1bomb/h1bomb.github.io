@@ -55,11 +55,11 @@
     <header>
       
   
-    <h1 class="title"><a href="/2015/09/15/measuring-javascript-functions-performance/">测量javascript函数的性能[译]</a></h1>
+    <h1 class="title"><a href="/2015/09/16/measuring-javascript-functions-performance/">测量javascript函数的性能[译]</a></h1>
   
 
       
-      <time datetime="2015-09-15T00:48:21.000Z">Sep 15 2015</time>
+      <time datetime="2015-09-16T00:39:27.000Z">Sep 16 2015</time>
       
     </header>
     <div class="entry">
@@ -69,21 +69,23 @@
 <p>假如你有一个正在运行的函数，但是你怀疑这个函数运行没有足够快，同时你计划着要改进这个函数。如何证明你的假设呢？什么是当今测试函数性能的最贱实践呢？一般来说，最好实现这个任务的方式是使用函数内建的<code>performance.now()</code>来测量在你执行函数前后的时间。</p>
 <p>在这篇文章我们将会讨论如何测量代码执行时间和避免一些常见的坑的技术。</p>
 <p><code>Performance.now()</code><br>高精度计时接口提供的一个方法，名字叫<code>now()</code>的可以返回一个DOM高精度时间戳对象。提供了一个浮点小数反映当前时间毫秒到毫秒的千分之一的时间戳。分别，这些数据没有添加过多的值来提供你分析，但是两个不同的数字之间的差值可以描述所消耗多少时间。</p>
-<p>In addition to the fact that it is more accurate than the built-in Date object, it’s also “monotonic”. That means, in simple terms, that it’s not affected by the system (e.g. your laptop OS) periodically correcting the system time. In even simpler terms, defining two instances of Date and calculating the difference isn’t representative of the time that has passed.</p>
-<p>The mathematical definition of “monotonic” is (of a function or quantity) varying in such a way that it either never decreases or never increases.</p>
-<p>Another way of explaining it, is by trying to imagine using it around the times of the year when the clocks go forward or go back. For example, when the clocks in your country all agree to skip an hour for the sake of maximizing daytime sunshine. If you were to make a Date instance before clocks go back an hour, and another Date instance afterwards, looking at the difference it would say something like “1 hour and 3 seconds and 123 milliseconds”. With two instances of performance.now() the difference would be “3 seconds 123 milliseconds and 456789 thousands of a millisecond”.</p>
-<p>In this section, I won’t cover this API in detail. So if you want to learn more about it and see some example of its use, I suggest you to read the article Discovering the High Resolution Time API.</p>
+<p>事实上它比内置的日期对象更准确,并且是‘单调’的。意味着，简单来说，是不会受到系统的影响（像你的笔记本操作系统）周期性地校正系统时间。在更简单来说，定义的两个日期实例计算出的插值并不表示所有消耗的时间。</p>
+<p>“单调”的数学定义式是（一个函数或数量）不同的方式进行不是增加就是减少。</p>
+<p>另一种方式的解释，可以尝试想象下这一年之中当时钟前进或后退。例如，当时钟在的你的国家由于需要提高白天的日照，从而把时间跳过一小时，如果你创建时间实例在这个时间回退一小时之前，另一个时间实例在这个之后，将会看到不同内容就像“1小时3秒123毫秒”。如果使用两个<code>performance.now()</code>实例，会是”3秒123毫秒456789千分之一毫秒”。</p>
+<p>在这个章节，我不会讲这些API的详情。所以如果你要看更多关于如何使用，我建议你去看下<a href="http://www.sitepoint.com/discovering-the-high-resolution-time-api/" target="_blank" rel="external">探索高精度计时API</a>这个文章。</p>
 <p>Now that you know what the High Resolution Time API is and how to use it, let’s delve into some potential pitfalls. But before doing so, let’s define a function called makeHash() that we’ll use for the remainder of the article.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeHash</span><span class="params">(source)</span> </span>{</div><div class="line">  <span class="keyword">var</span> hash = <span class="number">0</span>;</div><div class="line">  <span class="keyword">if</span> (source.length === <span class="number">0</span>) <span class="keyword">return</span> hash;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; source.length; i++) {</div><div class="line">    <span class="keyword">var</span> char = source.charCodeAt(i);</div><div class="line">    hash = ((hash&lt;&lt;<span class="number">5</span>)-hash)+char;</div><div class="line">    hash = hash & hash; <span class="comment">// Convert to 32bit integer</span></div><div class="line">  }</div><div class="line">  <span class="keyword">return</span> hash;</div><div class="line">}</div></pre></td></tr></table></figure>
+<p>现在你已经知道了什么是高精度计时API和如何使用，让我们深入探讨一些潜在的问题。但在这之前，我们定义一个叫<code>makeHash()</code>的函数来用于我本文的其余部分的介绍。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeHash</span><span class="params">(source)</span> </span>{</div><div class="line">  <span class="keyword">var</span> hash = <span class="number">0</span>;</div><div class="line">  <span class="keyword">if</span> (source.length === <span class="number">0</span>) <span class="keyword">return</span> hash;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; source.length; i++) {</div><div class="line">    <span class="keyword">var</span> char = source.charCodeAt(i);</div><div class="line">    hash = ((hash&lt;&lt;<span class="number">5</span>)-hash)+char;</div><div class="line">    hash = hash & hash; <span class="comment">// 转化到32的整形</span></div><div class="line">  }</div><div class="line">  <span class="keyword">return</span> hash;</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p>The execution of such function can be measured as shown below:</p>
+<p>执行这个函数像如下的测量：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> t0 = performance.now();</div><div class="line"><span class="keyword">var</span> result = makeHash(<span class="string">'Peter'</span>);</div><div class="line"><span class="keyword">var</span> t1 = performance.now();</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'Took'</span>, (t1 - t0).toFixed(<span class="number">4</span>), <span class="string">'milliseconds to generate:'</span>, result);</div></pre></td></tr></table></figure>
 
-<p>If you run this code in a browser, you should see something like this:</p>
+<p>如果你在浏览器里运行，你应该可以看到像如下的结果：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Took <span class="number">0.2730</span> <span class="built_in">milliseconds</span> <span class="built_in">to</span> generate: <span class="number">77005292</span></div></pre></td></tr></table></figure>
 
-<p>live demo of this code is shown below:</p>
-<p>See the Pen YXmdNJ by SitePoint (@SitePoint) on CodePen.</p>
+<p>运行的例子如下：</p>
+<iframe id="cp_embed_YXmdNJ" src="//codepen.io/SitePoint/embed/YXmdNJ?height=350&amp;theme-id=6441&amp;slug-hash=YXmdNJ&amp;default-tab=js&amp;user=SitePoint" scrolling="no" frameborder="0" height="350" allowtransparency="true" allowfullscreen="true" class="cp_embed_iframe undefined" style="width: 100%; overflow: hidden;"></iframe>
+
 <p>With this example in mind, let’s start our discussion.</p>
 <p>Pitfall #1 – Accidentally Measuring Unimportant Things<br>In the example above, you can note that the only thing that we do between one performance.now() and the other is calling the function makeHash() and assigning its value to a variable result. This gives us the time it takes to execute that function and nothing else. This measurement could also be made as detailed below:</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> t0 = performance.now();</div><div class="line"><span class="built_in">console</span>.log(makeHash(<span class="string">'Peter'</span>));  <span class="comment">// bad idea!</span></div><div class="line"><span class="keyword">var</span> t1 = performance.now();</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'Took'</span>, (t1 - t0).toFixed(<span class="number">4</span>), <span class="string">'milliseconds'</span>);</div></pre></td></tr></table></figure>
