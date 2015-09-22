@@ -55,11 +55,11 @@
     <header>
       
   
-    <h1 class="title"><a href="/2015/09/17/measuring-javascript-functions-performance/">测量javascript函数的性能[译]</a></h1>
+    <h1 class="title"><a href="/2015/09/22/measuring-javascript-functions-performance/">测量javascript函数的性能[译]</a></h1>
   
 
       
-      <time datetime="2015-09-17T00:16:58.000Z">Sep 17 2015</time>
+      <time datetime="2015-09-22T00:49:37.000Z">Sep 22 2015</time>
       
     </header>
     <div class="entry">
@@ -97,12 +97,18 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> t0 = performance.now();</div><div class="line"><span class="keyword">var</span> name = <span class="string">'Peter'</span>;</div><div class="line"><span class="keyword">var</span> result = makeHash(name.toLowerCase()).toString();</div><div class="line"><span class="keyword">var</span> t1 = performance.now();</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'Took'</span>, (t1 - t0).toFixed(<span class="number">4</span>), <span class="string">'milliseconds to generate:'</span>, result);</div></pre></td></tr></table></figure>
 
 <p>同样，我们不知道的执行时间是如何分布的。变量赋值是<code>toLowerCase（）</code>的调用，还是<code>toString（）</code>的调用？</p>
-<p>Pitfall #2 – Measuring only Once<br>Another common mistake is to make just one measurement, summarize the time taken and draw conclusions based on that. It’s likely to be totally different at different times. The execution time greatly depends on various factors:</p>
-<p>Time for the compiler to warm up (e.g. time to compile the code into byte code)<br>The main thread being busy doing other things we didn’t realize were going on<br>Your computer’s CPU(s) being busy with something that slows down your whole browser<br>An incremental improvement is to execute the function repeatedly, like this:</p>
+<p>陷阱 #2 - 只测量一次<br>另一个通常会犯的错误只是一次测量，总体所花费的时间在这个基础上的结论。很可能是在不同的时间完全不同的。执行的时间很大程度取决于多种因素：</p>
+<ul>
+<li>编译器预热的时间（如 编译代码到字节码的时间）</li>
+<li>主线程是忙着做我们并没有意识到要去其他的东西，</li>
+<li>你的计算机的CPU（S）是忙于的其他事情而减慢你的整个浏览器上增量改进的重复执行的功能。</li>
+</ul>
+<p>像这样：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> t0 = performance.now();</div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) {</div><div class="line">  makeHash(<span class="string">'Peter'</span>);</div><div class="line">}</div><div class="line"><span class="keyword">var</span> t1 = performance.now();</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'Took'</span>, ((t1 - t0) / <span class="number">10</span>).toFixed(<span class="number">4</span>), <span class="string">'milliseconds to generate'</span>);</div></pre></td></tr></table></figure>
 
-<p>A live demo of this example is shown below:</p>
-<p>See the Pen Qbezpj by SitePoint (@SitePoint) on CodePen.</p>
+<p>直接可以运行的代码片段demo如下：</p>
+<iframe id="cp_embed_Qbezpj" src="//codepen.io/SitePoint/embed/Qbezpj?height=350&amp;theme-id=6441&amp;slug-hash=Qbezpj&amp;default-tab=js&amp;user=SitePoint" scrolling="no" frameborder="0" height="350" allowtransparency="true" allowfullscreen="true" class="cp_embed_iframe undefined" style="width: 100%; overflow: hidden;"></iframe>
+
 <p>The risk with this approach is that our browser’s JavaScript engine might make sub-optimizations which means that the second time the function is called with the same input, it can benefit from remembering the first output and simply use that again. To solve this issue, you can use many different input strings instead of repeatedly sending in the same input string (e.g. ‘Peter’). Obviously, the problem with testing with different inputs is that naturally the function we’re measuring takes different amounts of time. Perhaps some of the inputs cause longer execution time than others.</p>
 <p>Pitfall #3 – Relying too Much on the Average<br>In the last section we learned that it’s a good practice to run something repeatedly, ideally with different inputs. However, we have to remember that the problem with different inputs is that the execution might take much longer than all the other inputs. So let’s take a step back and send in the same input. Suppose that we send in the same input ten times and for each, print out how long that took. The output might look something like this:</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Took <span class="number">0.2730</span> <span class="built_in">milliseconds</span> <span class="built_in">to</span> generate: <span class="number">77005292</span></div><div class="line">Took <span class="number">0.0234</span> <span class="built_in">milliseconds</span> <span class="built_in">to</span> generate: <span class="number">77005292</span></div><div class="line">Took <span class="number">0.0200</span> <span class="built_in">milliseconds</span> <span class="built_in">to</span> generate: <span class="number">77005292</span></div><div class="line">Took <span class="number">0.0281</span> <span class="built_in">milliseconds</span> <span class="built_in">to</span> generate: <span class="number">77005292</span></div><div class="line">Took <span class="number">0.0162</span> <span class="built_in">milliseconds</span> <span class="built_in">to</span> generate: <span class="number">77005292</span></div><div class="line">Took <span class="number">0.0245</span> <span class="built_in">milliseconds</span> <span class="built_in">to</span> generate: <span class="number">77005292</span></div><div class="line">Took <span class="number">0.0677</span> <span class="built_in">milliseconds</span> <span class="built_in">to</span> generate: <span class="number">77005292</span></div><div class="line">Took <span class="number">0.0289</span> <span class="built_in">milliseconds</span> <span class="built_in">to</span> generate: <span class="number">77005292</span></div><div class="line">Took <span class="number">0.0240</span> <span class="built_in">milliseconds</span> <span class="built_in">to</span> generate: <span class="number">77005292</span></div><div class="line">Took <span class="number">0.0311</span> <span class="built_in">milliseconds</span> <span class="built_in">to</span> generate: <span class="number">77005292</span></div></pre></td></tr></table></figure>
