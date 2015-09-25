@@ -55,6 +55,39 @@
     <header>
       
   
+    <h1 class="title"><a href="/2015/05/31/JavaScript-inheritance-5to6/">关于Javascript继承在es5到es6改变</a></h1>
+  
+
+      
+      <time datetime="2015-05-31T15:02:18.000Z">May 31 2015</time>
+      
+    </header>
+    <div class="entry">
+      
+        <p>再重温下之前继承的实现：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> inherits = <span class="function"><span class="keyword">function</span><span class="params">(ctor, superCtor)</span> </span>{</div><div class="line">  ctor.super_ = superCtor;</div><div class="line">  ctor.prototype = <span class="built_in">Object</span>.create(superCtor.prototype, {</div><div class="line">    constructor: {</div><div class="line">      value: ctor,</div><div class="line">      enumerable: <span class="literal">false</span>,</div><div class="line">      writable: <span class="literal">true</span>,</div><div class="line">      configurable: <span class="literal">true</span></div><div class="line">    }</div><div class="line">  });</div><div class="line">};</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Point</span><span class="params">(x, y)</span> </span>{</div><div class="line">  <span class="keyword">this</span>.x = x;</div><div class="line">  <span class="keyword">this</span>.y = y;</div><div class="line">}</div><div class="line"></div><div class="line">Point.prototype.toString = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">  <span class="keyword">return</span> <span class="string">'('</span> + <span class="keyword">this</span>.x + <span class="string">', '</span> + <span class="keyword">this</span>.y + <span class="string">')'</span>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">ColorPoint</span><span class="params">(x, y, color)</span> </span>{</div><div class="line"></div><div class="line">  Point.call(<span class="keyword">this</span>, x, y); </div><div class="line">  <span class="keyword">this</span>.color = color;</div><div class="line">}</div><div class="line"></div><div class="line">inherits(ColorPoint, Point);</div><div class="line"></div><div class="line">ColorPoint.prototype.toString = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.color + <span class="string">' '</span> + ColorPoint.super_.prototype.toString.call(<span class="keyword">this</span>); </div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>然而es6则可以这么写</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Point {</div><div class="line"></div><div class="line">  constructor(x, y) {</div><div class="line">    <span class="keyword">this</span>.x = x;</div><div class="line">    <span class="keyword">this</span>.y = y;</div><div class="line">  }</div><div class="line"></div><div class="line">  toString() {</div><div class="line">    <span class="keyword">return</span> <span class="string">'('</span> + <span class="keyword">this</span>.x + <span class="string">', '</span> + <span class="keyword">this</span>.y + <span class="string">')'</span>;</div><div class="line">  }</div><div class="line"></div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">class</span> ColorPoint extends Point {</div><div class="line"></div><div class="line">  constructor(x, y, color) {</div><div class="line">    super(x, y); </div><div class="line">    <span class="keyword">this</span>.color = color;</div><div class="line">  }</div><div class="line"></div><div class="line">  toString() {</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.color + <span class="string">' '</span> + super.toString(); </div><div class="line">  }</div><div class="line"></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>显然es6的写法更加清晰，隐去了Javascript硬去使用prototype和call的实现细节。但是es6并没有完全按照Java ,C++面向对象的语法来实现，<br>只是对于原型继承的一个语法糖。</p>
+
+      
+    </div>
+    
+      
+    
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  <div class="post-content">
+    <header>
+      
+  
     <h1 class="title"><a href="/2015/05/27/node-inheritance-usage/">nodejs继承的用法</a></h1>
   
 
