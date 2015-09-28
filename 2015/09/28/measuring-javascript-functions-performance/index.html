@@ -61,7 +61,7 @@
   
 
       
-      <time datetime="2015-09-27T00:55:31.000Z">Sep 27 2015</time>
+      <time datetime="2015-09-28T00:53:26.000Z">Sep 28 2015</time>
       
     </header>
     <div class="entry">
@@ -134,9 +134,11 @@
 <p>运行下得到如下的输出：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="literal">true</span></div><div class="line"><span class="literal">false</span></div><div class="line"><span class="literal">true</span></div><div class="line"><span class="literal">false</span></div><div class="line">isIn1 took <span class="number">0.0050</span></div><div class="line">isIn2 took <span class="number">0.0150</span></div></pre></td></tr></table></figure>
 
-<p>直接可以运行的代码片段demo如下：<br>See the Pen YXmdZJ by SitePoint (@SitePoint) on CodePen.</p>
-<p>What the heck has just happened? The first function was three times faster. That was not supposed to happen!</p>
-<p>The explanation is simple but subtle. The first function which uses haystack.forEach benefits from some low-level optimizations in the browser’s JavaScript engine that we don’t get when we use an array index technique. It proves our point: you never know until you measure it!</p>
+<p>直接可以运行的代码片段demo如下：</p>
+<iframe id="cp_embed_YXmdZJ" src="//codepen.io/SitePoint/embed/YXmdZJ?height=350&amp;theme-id=6441&amp;slug-hash=YXmdZJ&amp;default-tab=js&amp;user=SitePoint" scrolling="no" frameborder="0" height="350" allowtransparency="true" allowfullscreen="true" class="cp_embed_iframe undefined" style="width: 100%; overflow: hidden;"></iframe>
+
+<p>刚刚发生了什么？第一个功能是快三倍。这是不应该发生的！</p>
+<p>原因很简单，但是很微妙。第一个功能，使用了haystack.forEach得益于在浏览器的JavaScript引擎的一些低级别的优化，当我们使用数组索引去做，就不会被优化。这证明了我们的观点：如果你不测量，你永远不知道！</p>
 <p>Conclusions<br>In our attempt to demonstrate how to use performance.now() to get an accurate execution time in JavaScript, we stumbled across a benchmarking scenario where our intuition turned out to be quite the opposite of what our empirical results conclude. The point is that, if you want to write faster web apps your JavaScript code needs to be optimized. Because computers are (almost) living breathing things, they are unpredictable and surprising. The most reliable way to know that our code improvements yield faster execution, is to measure and compare.</p>
 <p>The other reason we never know which code is faster, if we have multiple ways of doing the same thing, is because context matters. In the previous section we perform a case insensitive string search looking for one string among 26 other strings. It’s likely that the conclusion would be totally different if we instead had to look for one string among 100,000 other strings.</p>
 <p>The list above isn’t exhaustive as there are more pitfalls to be aware of. For example, measuring unrealistic scenarios or only measuring on one JavaScript engine. But the sure thing is that a great asset for JavaScript developers who want to write faster and better web apps is performance.now(). Last but not least, remember that measuring execution time only yields one dimension of “better code”. There’s also memory and code complexity considerations to bear in mind.</p>
