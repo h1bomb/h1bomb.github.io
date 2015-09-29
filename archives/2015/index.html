@@ -58,11 +58,11 @@
     <header>
       
   
-    <h1 class="title"><a href="/2015/09/28/measuring-javascript-functions-performance/">测量javascript函数的性能[译]</a></h1>
+    <h1 class="title"><a href="/2015/09/29/measuring-javascript-functions-performance/">测量javascript函数的性能[译]</a></h1>
   
 
       
-      <time datetime="2015-09-28T00:53:26.000Z">Sep 28 2015</time>
+      <time datetime="2015-09-29T00:57:45.000Z">Sep 29 2015</time>
       
     </header>
     <div class="entry">
@@ -140,10 +140,10 @@
 
 <p>刚刚发生了什么？第一个功能是快三倍。这是不应该发生的！</p>
 <p>原因很简单，但是很微妙。第一个功能，使用了haystack.forEach得益于在浏览器的JavaScript引擎的一些低级别的优化，当我们使用数组索引去做，就不会被优化。这证明了我们的观点：如果你不测量，你永远不知道！</p>
-<p>Conclusions<br>In our attempt to demonstrate how to use performance.now() to get an accurate execution time in JavaScript, we stumbled across a benchmarking scenario where our intuition turned out to be quite the opposite of what our empirical results conclude. The point is that, if you want to write faster web apps your JavaScript code needs to be optimized. Because computers are (almost) living breathing things, they are unpredictable and surprising. The most reliable way to know that our code improvements yield faster execution, is to measure and compare.</p>
-<p>The other reason we never know which code is faster, if we have multiple ways of doing the same thing, is because context matters. In the previous section we perform a case insensitive string search looking for one string among 26 other strings. It’s likely that the conclusion would be totally different if we instead had to look for one string among 100,000 other strings.</p>
-<p>The list above isn’t exhaustive as there are more pitfalls to be aware of. For example, measuring unrealistic scenarios or only measuring on one JavaScript engine. But the sure thing is that a great asset for JavaScript developers who want to write faster and better web apps is performance.now(). Last but not least, remember that measuring execution time only yields one dimension of “better code”. There’s also memory and code complexity considerations to bear in mind.</p>
-<p>What about you? Have you ever used this function to test your code’s performance? If not, how do you proceed in this stage? Please share your thoughts in the comments below. Let’s start a discussion!</p>
+<p>结论<br>在我们试图如何使用<code>performance.now（）</code>取得JavaScript的一个准确的执行时间，我们偶然发现了一个基准场景，我们的实证研究结果得出结论和我们的直觉完全相反。问题的关键是，如果你想写得更快的Web应用程序，JavaScript代码就需要优化。由于电脑（差不多）是活生生的东西，令人如此的不可预知。最可靠的方法就是通过衡量和比较来改进代码确保更快的执行速度。</p>
+<p>另一个原因，我们永远不知道这些代码是更快的，因为不同的上下文中，我们有做同一件事的多种方式。在上一节中，我们执行不区分大小写字符串搜索寻找除其他26个字符串。如果我们10万名中匹配字符串，该结论可能是完全不同的。</p>
+<p>上述例子并不完整，还有更多的陷阱，以做到心中有数。例如，测量不现实的场景或仅测量在一个JavaScript引擎。但肯定的是，谁想要写出更快，更好的Web应用程序,开发者就可以使用<code>performance.now（）</code>这个不错的协助。最后但并非最不重要的，请记住，测试执行时间只产生了“更好的代码”的一个方面。还有内存和代码的复杂性考虑，要牢记。</p>
+<p>现在你这么想？你有没有用这个功能来测试你的代码的性能？如果没有，你怎么在这个阶段进行？请在下面的评论中分享你的看法。让我们开始讨论！</p>
 
       
     </div>
