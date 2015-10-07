@@ -58,34 +58,34 @@
     <header>
       
   
-    <h1 class="title"><a href="/2015/09/30/debugging-memory-leaks-node-js-applications/">调试node.js应用的内存泄漏[译]</a></h1>
+    <h1 class="title"><a href="/2015/10/08/debugging-memory-leaks-node-js-applications/">调试node.js应用的内存泄漏[译]</a></h1>
   
 
       
-      <time datetime="2015-09-30T00:50:56.000Z">Sep 30 2015</time>
+      <time datetime="2015-10-07T16:19:52.000Z">Oct 8 2015</time>
       
     </header>
     <div class="entry">
       
         <p>原文：<a href="http://www.toptal.com/nodejs/debugging-memory-leaks-node-js-applications" target="_blank" rel="external">http://www.toptal.com/nodejs/debugging-memory-leaks-node-js-applications</a></p>
-<p>I once drove an Audi with a V8 twin-turbo engine inside, and its performance was incredible. I was driving at around 140MPH on IL-80 highway near Chicago at 3AM when there was nobody on the road. Ever since then, the term “V8” has become associated with high performance to me.</p>
+<p>有一次，我开着一辆内部是V8双涡轮增压发动机的奥迪，其性能令人难以置信。凌晨3点，我行驶在芝加哥附近没有人的IL-80高速公路，时速达到140MPH。从那时起，“V8”这个术语成为我对高性能的认识。</p>
 <blockquote>
-<p>Node.js is a platform built on Chrome’s V8 JavaScript engine for easy building of fast and scalable network applications.</p>
+<p>Node.js是一个建立在Chrome的JavaScript引擎V8之上的易于快速构建可伸缩的网络应用的平台。</p>
 </blockquote>
-<p>Although Audi’s V8 is very powerful, you are still limited with the capacity of your gas tank. The same goes for Google’s V8 - the JavaScript engine behind Node.js. Its performance is incredible and there are many reasons why Node.js <a href="http://www.toptal.com/nodejs/why-the-hell-would-i-use-node-js" target="_blank" rel="external">works well for many use cases</a>, but you’re always limited by the heap size. When you need to process more requests in your Node.js application you have two choices: either scale vertically or scale horizontally. Horizontal scaling means you have to run more concurrent application instances. When done right, you end up being able to serve more requests. Vertical scaling means that you have to improve your application’s memory usage and performance or increase resources available for your application instance.</p>
+<p>尽管奥迪的V8非常强大，但仍然限于用你的油箱的容量大小。这同样适用于谷歌的V8引擎 - 在node.js背后的JavaScript引擎。有很多因素使Node.js的性能是难以置信的，<a href="http://www.toptal.com/nodejs/why-the-hell-would-i-use-node-js" target="_blank" rel="external">适用于许多应用案例</a>，但是你总是受限于内存堆的大小。当你的Node.js应用程序需要处理更多的请求时，你有两个选择：就是规模垂直或水平扩展。水平扩展意味着你必须运行多个并发的应用程序实例。如果做得对，你最终能够服务更多的请求。垂直扩展意味着你要为你的应用实例提高应用程序的内存使用情况和可用的性能或增加资源。</p>
 <p><img src="http://assets.toptal.io/uploads/blog/image/91676/toptal-blog-image-1442927311924-3c41bb7d7b1a8306609bcbe5570ccc63.jpg" alt="http://assets.toptal.io/uploads/blog/image/91676/toptal-blog-image-1442927311924-3c41bb7d7b1a8306609bcbe5570ccc63.jpg"></p>
-<p>Recently I was asked to work on a Node.js application for one of my Toptal clients to fix a memory leak issue. The application, an API server, was intended to be able to process hundreds of thousands of requests every minute. The original application occupied almost 600MB of RAM and therefore we decided to take the hot API endpoints and reimplement them. Overhead becomes very pricey when you need to serve many requests.</p>
-<p>For the new API we chose restify with native MongoDB driver and Kue for background jobs. Sounds like a very lightweight stack, right? Not quite. During peak load a new application instance could consume up to 270MB of RAM. Therefore my dream of having two application instances per 1X Heroku Dyno vanished.</p>
-<h2 id="Node-js_Memory_Leak_Debugging_Arsenal">Node.js Memory Leak Debugging Arsenal</h2>
+<p>最近有为我的Toptal（一个开放外包的平台）客户修复一个运行在Node.js上应用程序的内存泄漏问题。该应用程序是一个能够在每一分钟处理成千上万请求的API服务器。最初的应用几乎占据了600MB的RAM，所以我们决定采取热API端来重新实现它们。当你需要服务于许多请求开销变得非常昂贵。</p>
+<p>对于新的API，我们选择的restify以及本地的MongoDB的驱动程序和Kue后台服务。听起来像是一个非常轻量级的栈，对不对？其实不然。在高峰负荷新的应用程序实例可以消耗高达270MB的RAM。因此起两个每1X的Heroku Dyno应用实的想法破灭了。</p>
+<h2 id="Node-js_内存泄露调试军火库">Node.js 内存泄露调试军火库</h2>
 <h3 id="Memwatch">Memwatch</h3>
-<p>If you search for “how to find leak in node” the first tool you’d probably find is memwatch. The original package was abandoned a long time ago and is no longer maintained. However you can easily find newer versions of it in GitHub’s fork list for the repository. This module is useful because it can emit leak events if it sees the heap grow over 5 consecutive garbage collections.</p>
+<p>如果你搜索“如何在node里发现泄露”这个第一个你或许会搜到的工具就是memwatch。原始的包很久以前就被遗弃，不再保留。但是你可以很容易地找到在GitHub上的fork的库的更新版本。该模块是有用的，如果它看到堆增长超过5个连续的垃圾收集，它可以触发泄漏事件。</p>
 <h3 id="Heapdump">Heapdump</h3>
-<p>Great tool which allows Node.js developers to take heap snapshot and inspect them later with Chrome Developer Tools.</p>
+<p>伟大的工具，它允许开发人员使用Chrome开发人员工具对Node.js采取堆快照后对其进行检查。</p>
 <h3 id="Node-inspector">Node-inspector</h3>
-<p>Even a more useful alternative to heapdump, because it allows you to connect to a running application, take heap dump and even debug and recompile it on the fly.</p>
-<h2 id="Taking_“node-inspector”_for_a_Spin">Taking “node-inspector” for a Spin</h2>
-<p>Unfortunately, you will not be able to connect to production applications that are running on Heroku, because it does not allow signals to be sent to running processes. However, Heroku is not the only hosting platform.</p>
-<p>To experience node-inspector in action, we will write a simple Node.js application using restify and put a little source of memory leak within it. All experiments here are made with Node.js v0.12.7, which has been compiled against V8 v3.28.71.19.</p>
+<p>即使是被更为有用的heapdump替代，但它任然可以让你连接到运行的应用程序，采取堆转储，甚至调试，并重新编译在程序运行中。</p>
+<h2 id="针对“node-inspector”_的说明">针对“node-inspector” 的说明</h2>
+<p>不幸的是，将不能连接到被在Heroku运行生产的应用中，因为不允许信号被发送到运行的进程。然而，Heroku的是不是唯一的托管平台。</p>
+<p>为了在实战中体验node-inspector，我们将使用的RESTify编写一个简单的Node.js应用程序并将一点点内存泄漏的根源放在其中。这里所有的实验都是用Node.js v0.12.7和已编译的V8 v3.28.71.19。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> restify = <span class="built_in">require</span>(<span class="string">'restify'</span>);</div><div class="line"></div><div class="line"><span class="keyword">var</span> server = restify.createServer();</div><div class="line"></div><div class="line"><span class="keyword">var</span> tasks = [];</div><div class="line"></div><div class="line">server.pre(<span class="function"><span class="keyword">function</span><span class="params">(req, res, next)</span> </span>{</div><div class="line">  tasks.push(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">return</span> req.headers;</div><div class="line">  });</div><div class="line"></div><div class="line">  <span class="comment">// Synchronously get user from session, maybe jwt token</span></div><div class="line">  req.user = {</div><div class="line">    id: <span class="number">1</span>,</div><div class="line">    username: <span class="string">'Leaky Master'</span>,</div><div class="line">  };</div><div class="line"></div><div class="line">  <span class="keyword">return</span> next();</div><div class="line">});</div><div class="line"></div><div class="line">server.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span><span class="params">(req, res, next)</span> </span>{</div><div class="line">  res.send(<span class="string">'Hi '</span> + req.user.username);</div><div class="line">  <span class="keyword">return</span> next();</div><div class="line">});</div><div class="line"></div><div class="line">server.listen(<span class="number">3000</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'%s listening at %s'</span>, server.name, server.url);</div><div class="line">});</div></pre></td></tr></table></figure>
 
 <p>The application here is very simple and has a very obvious leak. The array tasks would grow over application lifetime causing it to slow down and eventually crash. The problem is that we are not only leaking closure but entire request objects as well.</p>
