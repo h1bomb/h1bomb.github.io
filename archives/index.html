@@ -58,11 +58,11 @@
     <header>
       
   
-    <h1 class="title"><a href="/2015/10/09/debugging-memory-leaks-node-js-applications/">调试node.js应用的内存泄漏[译]</a></h1>
+    <h1 class="title"><a href="/2015/10/10/debugging-memory-leaks-node-js-applications/">调试node.js应用的内存泄漏[译]</a></h1>
   
 
       
-      <time datetime="2015-10-09T15:46:52.000Z">Oct 9 2015</time>
+      <time datetime="2015-10-10T00:57:34.000Z">Oct 10 2015</time>
       
     </header>
     <div class="entry">
@@ -113,14 +113,14 @@
 <p><img src="http://assets.toptal.io/uploads/blog/image/91677/toptal-blog-image-1442927477717.3-7c74dfceddd0955f27de9129eedf4261.jpg" alt="http://assets.toptal.io/uploads/blog/image/91677/toptal-blog-image-1442927477717.3-7c74dfceddd0955f27de9129eedf4261.jpg"></p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ab -<span class="built_in">c</span> <span class="number">50</span> -n <span class="number">1000000</span> -k http:<span class="comment">//example.com/</span></div></pre></td></tr></table></figure>
 
-<p>Before taking new snapshots, V8 would perform mark-sweep garbage collection, so we definitely know that there is no old garbage in the snapshot.</p>
-<h2 id="Fixing_the_Leak_on_the_Fly">Fixing the Leak on the Fly</h2>
-<p>After collecting heap allocation snapshots over a period of 3 minutes we end up with something like the following:</p>
+<p>在建立新的快照之前，V8将执行标记 - 清除垃圾收集，所以我们肯定知道有没有旧垃圾中的快照。</p>
+<h2 id="修复运行中的泄漏">修复运行中的泄漏</h2>
+<p>在收集堆分配快照3分钟后，我们得到类似下面的结果</p>
 <p><img src="http://assets.toptal.io/uploads/blog/image/91678/toptal-blog-image-1442927547865.5-d0c4450569bc2a285b3007eca57dfa25.jpg" alt="http://assets.toptal.io/uploads/blog/image/91678/toptal-blog-image-1442927547865.5-d0c4450569bc2a285b3007eca57dfa25.jpg"></p>
-<p>We can clearly see that there are some gigantic arrays, a lot of IncomingMessage, ReadableState, ServerResponse and Domain objects as well in heap. Let’s try to analyze the source of the leak.</p>
-<p>Upon selecting heap diff on chart from 20s to 40s, we will only see objects which were added after 20s from when you started the profiler. This way you could exclude all normal data.</p>
-<p>Keeping note of how many objects of each type are in the system, we expand the filter from 20s to 1min. We can see that the arrays, already quite gigantic, keeps growing. Under “(array)” we can see that there are a lot of objects “(object properties)” with equal distance. Those objects are the source of our memory leak.</p>
-<p>Also we can see that “(closure)” objects grow rapidly as well.</p>
+<p>我们可以清楚地看到，在堆里面有一些巨大的数组，很多IncomingMessage，ReadableState，ServerResponse和域对象。让我们分析下泄漏源。</p>
+<p>在从20秒到40秒选择堆差异的图表中，我们只看到它是20秒后开始查看对象。这样，您就可以排除出所有正常的数据。</p>
+<p>保持关注每种类型的对象在系统中的数目，我们扩大过滤从20多岁到1分钟。我们可以看到数组已经相当大了，并持续增长。在“（array）”，我们可以看到有很多的对象“（object properties）”具有同等的距离。这些对象是我们的内存泄漏的源头。</p>
+<p>此外，我们也可以看到，“（closure）”的对象快速增长。</p>
 <p>It might be handy to look at the strings as well. Under the strings list there are a lot of “Hi Leaky Master” phrases. Those might give us some clue too.</p>
 <p>In our case we know that the string ”Hi Leaky Master” could only be assembled under the “GET /” route.</p>
 <p>If you open retainers path you will see this string is somehow referenced via req, then there is context created and all this added to some giant array of closures.</p>
@@ -196,11 +196,11 @@
     <header>
       
   
-    <h1 class="title"><a href="/2015/10/09/debugging-memory-leaks-node-js-applications/"></a></h1>
+    <h1 class="title"><a href="/2015/10/10/debugging-memory-leaks-node-js-applications/"></a></h1>
   
 
       
-      <time datetime="2015-10-09T15:26:09.000Z">Oct 9 2015</time>
+      <time datetime="2015-10-10T00:41:46.000Z">Oct 10 2015</time>
       
     </header>
     <div class="entry">
@@ -1295,23 +1295,26 @@ server.listen(3000, function() {
 <pre><code>node --trace_gc app.js
 </code></pre>
 
-<p>Let us assume that we have already started our Node.js application with this flag. Before connecting the application with node-inspector, we need to send it the SIGUSR1 signal to the running process. If you run Node.js in cluster, make sure you connect to one of the slave processes.</p>
-<p><pre><code>kill -SIGUSR1 $pid # Replace $pid with the actual process ID
-</code></pre><br>
-By doing this, we are making the Node.js application (V8 to be precise) enter debugging mode. In this mode, the application automatically opens the port 5858 with <a href="https://code.google.com/p/v8-wiki/wiki/DebuggerProtocol" target="_blank" rel="external">V8 Debugging Protocol</a>.</p>
-<p>Our next step is to run node-inspector which will connect to the debugging interface of the running application and open another web interface on port 8080.</p>
-<p><pre><code>$ node-inspector
+<p>Let us assume that we have already started our Node.js application with this flag. Before connecting the application with node-inspector, we need to send it the SIGUSR1 signal to the running process. If you run Node.js in cluster, make sure you connect to one of the slave processes.<br>
+假设我们已经在这个Node.js的应用设置标示。在连接node-inspector到应用程序之前，我们需要把SIGUSR1信号发送到正在运行的进程。如果在群集中运行Node.js，请确保您连接到其中一个从属进程。</p>
+<pre><code>kill -SIGUSR1 $pid # Replace $pid with the actual process ID
+</code></pre>
+
+<p>通过这样做，我们正在让Node.js的应用（准确地说是V8）进入调试模式。在这种模式下，应用自动将打开的端口5858<a href="https://code.google.com/p/v8-wiki/wiki/DebuggerProtocol" target="_blank" rel="external">V8调试协议</a>。</p>
+<p>我们下一步运行node-inspector连接到运行应用的调试接口，并打开8080端口的web接口</p>
+<pre><code>$ node-inspector
 Node Inspector v0.12.2
 Visit http://127.0.0.1:8080/?ws=127.0.0.1:8080&amp;port=5858 to start debugging.
-</code></pre><br>
-In case the application is running on production and you have a firewall in place, we can tunnel remote port 8080 to localhost:</p>
+</code></pre>
+
+<p>如果应用程序在生产中运行，并且有一个防火墙，我们可以通过隧道远程端口8080到本地主机：</p>
 <p><pre><code>ssh -L 8080:localhost:8080 admin@example.com
 </code></pre><br>
-Now you could open your Chrome web browser and get full access to Chrome Development Tools attached to your remote production application. Unfortunately, Chrome Developer Tools will not work in other browsers.</p>
-<h2 id="lets-find-a-leak"><a name="user-content-lets-find-a-leak" href="#lets-find-a-leak" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Let’s Find a Leak!</h2>
-<p>Memory leaks in V8 are not real memory leaks as we know them from C/C++ applications. In JavaScript variables do not disappear into the void, they just get “forgotten”. Our goal is to find these forgotten variables and remind them that Dobby is free.</p>
-<p>Inside Chrome Developer Tools we have access to multiple profilers. We are particularly interested in Record Heap Allocations which runs and takes multiple heap snapshots over time. This gives us a clear peek into which objects are leaking.</p>
-<p>Start recording heap allocations and let’s simulate 50 concurrent users on our home page using Apache Benchmark.</p>
+现在，你可以打开你的Chrome网络浏览器即可获得完全的访问连接到远程生产应用程序的Chrome开发工具。不幸的是，Chrome开发人员工具将不能在其他浏览器。</p>
+<h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>让我们发现泄漏</h2>
+<p>在V8内存泄漏是不是真正的内存泄漏就像我们从C / C++应用程序的理解的那样。在JavaScript变量为空值时并不消失，他们只是“被遗忘”。我们的目标是要找到这些被遗忘的变量，并使这些内存释放。</p>
+<p>在Chrome开发工具里我们有多个profiler。我们在记录堆分配而运行，并随着时间的推移需要多堆快照特别感兴趣。这给了我们一个明确的窥视到哪些对象正在泄漏。</p>
+<p>开始录制堆分配，让我们模拟使用Apache基准在我们的主页上50个并发用户。</p>
 <p><img alt="http://assets.toptal.io/uploads/blog/image/91677/toptal-blog-image-1442927477717.3-7c74dfceddd0955f27de9129eedf4261.jpg" src="http://assets.toptal.io/uploads/blog/image/91677/toptal-blog-image-1442927477717.3-7c74dfceddd0955f27de9129eedf4261.jpg"></p>
 <pre><code>ab -c 50 -n 1000000 -k http://example.com/
 </code></pre>
