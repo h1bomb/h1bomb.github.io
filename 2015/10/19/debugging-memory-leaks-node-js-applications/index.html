@@ -61,7 +61,7 @@
   
 
       
-      <time datetime="2015-10-18T15:15:17.000Z">Oct 18 2015</time>
+      <time datetime="2015-10-19T00:07:08.000Z">Oct 19 2015</time>
       
     </header>
     <div class="entry">
@@ -148,15 +148,15 @@
 <p>V8有两个内置的垃圾收集机制：清扫，标记清扫和标记压缩。</p>
 <p>清扫是一个非常快的垃圾回收技术，在新的空间进行对象操作。清扫的一种实现<a href="http://en.wikipedia.org/wiki/Cheney&#39;s_algorithm" target="_blank" rel="external">Cheney’s Algorithm</a>。概念非常简单，新空间被分成两个相等的各半个空间：到空间和从空间。当去空间满了就发起清扫的GC。它只是从空间和所有活动对象复制到从空间或将其提升到旧空间之一，如果他们经历了两次清扫，然后被完全从空间删除。可清除速度非常快但是他们保持双大小的堆不断在内存中拷贝对象的开销。使用可清除的原因是因为大多数对象早期被回收。</p>
 <p>标记清扫和标记压缩是另一种V8垃圾回收的控制方式。另一种满垃圾收集器。它标志着所有活节点，然后清洗全部死的节点并重新整理内存。</p>
-<h3 id="GC_Performance_and_Debugging_Tips">GC Performance and Debugging Tips</h3>
-<p>While for web applications high performance might not be such a big problem, you will still want to avoid leaks at all costs. During the mark phase in full GC the application is actually paused until garbage collection is completed. This means the more objects you have in the heap, the longer it will take to perform GC and the longer users will have to wait.</p>
-<h3 id="Always_give_names_to_closures_and_functions">Always give names to closures and functions</h3>
-<p>It’s much easier to inspect stack traces and heaps when all your closures and functions have names.</p>
+<h3 id="GC性能和调试贴士">GC性能和调试贴士</h3>
+<p>虽然Web应用程序的高性能可能不是个大问题，你还是会希望不惜一切代价避免泄漏。在full GC的标记阶段的应用程序实际上已暂停，直到垃圾收集完成。这意味着越多的对象在堆中时间越长，执行GC时，越长的用户等待时间。</p>
+<h3 id="总是给闭包和函数命名">总是给闭包和函数命名</h3>
+<p>所有的闭包和功能有名字的话，很容易检查跟踪堆栈。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">db.query(<span class="string">'GIVE THEM ALL'</span>, <span class="function"><span class="keyword">function</span> <span class="title">GiveThemAllAName</span><span class="params">(error, data)</span> </span>{</div><div class="line">    ...</div><div class="line">})</div></pre></td></tr></table></figure>
 
-<h3 id="Avoid_large_objects_in_hot_functions">Avoid large objects in hot functions</h3>
+<h3 id="避免在热函数上使用大对象">避免在热函数上使用大对象</h3>
 <p>Ideally you want to avoid large objects inside of hot functions so that all data is fit into New Space. All CPU and memory bound operations should be executed in background. Also avoid deoptimization triggers for hot functions, optimized hot function uses less memory than non-optimized ones.</p>
-<h3 id="Hot_functions_should_be_optimized">Hot functions should be optimized</h3>
+<h3 id="热函数应该被优化">热函数应该被优化</h3>
 <p>Hot functions that run faster but also consume less memory cause GC to run less often. V8 provides some helpful debugging tools to spot non-optimized functions or deoptimized functions.</p>
 <p>Avoid polymorphism for IC’s in hot functions</p>
 <p>Inline Caches (IC) are used to speed up execution of some chunks of code, either by caching object property access obj.key or some simple function.</p>
@@ -165,16 +165,16 @@
 <p>When <code>x(a,b)</code> is run for the first time, V8 creates a monomorphic IC. When you call x a second time, V8 erases the old IC and creates a new polymorphic IC which supports both types of operands integer and string. When you call IC the third time, V8 repeats the same procedure and creates another polymorphic IC of level 3.</p>
 <p>However, there is a limitation. After IC level reaches 5 (could be changed with <code>–max_inlining_levels</code> flag) the function becomes megamorphic and is no longer considered optimizable.</p>
 <p>It’s intuitively understandable that monomorphic functions run the fastest and also have a smaller memory footprint.</p>
-<h3 id="Don’t_add_large_files_to_memory">Don’t add large files to memory</h3>
+<h3 id="不要把大对象加入内存">不要把大对象加入内存</h3>
 <p>This one is obvious and well known. If you have large files to process, for example a large CSV file, read it line-by-line and process in little chunks instead of loading the entire file to memory. There are rather rare cases where a single line of csv would be larger than 1mb, thus allowing you to fit it in New Space.</p>
-<h3 id="Do_not_block_main_server_thread">Do not block main server thread</h3>
+<h3 id="不要阻塞主服务线程">不要阻塞主服务线程</h3>
 <p>If you have some hot API which takes some time to process, such as an API to resize images, move it to a separate thread or turn it into a background job. CPU intensive operations would block main thread forcing all other customers to wait and keep sending requests. Unprocessed request data would stack in memory, thus forcing full GC to take longer time to finish.</p>
-<h3 id="Do_not_create_unnecessary_data">Do not create unnecessary data</h3>
+<h3 id="不要创建不必要的数据">不要创建不必要的数据</h3>
 <p>I once had a weird experience with restify. If you send a few hundred thousand requests to an invalid URL then the application memory would rapidly grow on up to hundred megabytes until a full GC kicks in a few seconds later, which is when everything would go back to normal. Turns out that for each invalid URL, restify generates a new error object which includes long stack traces. This forced newly created objects to be allocated in Large Object Space rather than in New Space.</p>
 <p>Having access to such data could be very helpful during development, but obviously not required on production. Therefore the rule is simple - do not generate data unless you certainly need it.</p>
-<h3 id="Know_your_tools">Know your tools</h3>
+<h3 id="了解你的工具">了解你的工具</h3>
 <p>Last, but certainly not the least, is to know your tools. There are various debuggers, leak cathers, and usage graphs generators. All those tools can help you make your software faster and more efficient.</p>
-<h3 id="Conclusion">Conclusion</h3>
+<h3 id="结论">结论</h3>
 <p>Understanding how V8’s garbage collection and code optimizer works is a key to application performance. V8 compiles JavaScript to native assembly and in some cases well written code could achieve performance comparable with GCC compiled applications.</p>
 <p>And in case you are wondering, the new API application for my Toptal client, although there is room for improvement, is working very well!</p>
 <p>Joyent recently released a new version of Node.js which uses one of the latest versions of V8. Some applications written for Node.js v0.12.x may not be compatible with the new v4.x release. However, applications will experience tremendous performance and memory usage improvement within the new version of Node.js.</p>
