@@ -55,11 +55,11 @@
     <header>
       
   
-    <h1 class="title"><a href="/2015/10/19/debugging-memory-leaks-node-js-applications/">调试node.js应用的内存泄漏[译]</a></h1>
+    <h1 class="title"><a href="/2015/10/27/debugging-memory-leaks-node-js-applications/">调试node.js应用的内存泄漏[译]</a></h1>
   
 
       
-      <time datetime="2015-10-19T00:07:08.000Z">Oct 19 2015</time>
+      <time datetime="2015-10-27T00:52:18.000Z">Oct 27 2015</time>
       
     </header>
     <div class="entry">
@@ -153,16 +153,16 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">db.query(<span class="string">'GIVE THEM ALL'</span>, <span class="function"><span class="keyword">function</span> <span class="title">GiveThemAllAName</span><span class="params">(error, data)</span> </span>{</div><div class="line">    ...</div><div class="line">})</div></pre></td></tr></table></figure>
 
 <h3 id="避免在热函数上使用大对象">避免在热函数上使用大对象</h3>
-<p>Ideally you want to avoid large objects inside of hot functions so that all data is fit into New Space. All CPU and memory bound operations should be executed in background. Also avoid deoptimization triggers for hot functions, optimized hot function uses less memory than non-optimized ones.</p>
+<p>理想情况下，你要避免热函数内部的大对象，把所有的数据装配到新的空间。所有的CPU和内存相关的操作应在后台执行。此外，还要避免触发热功能不优化，优化的热函数使用较少的内存比非优化的。</p>
 <h3 id="热函数应该被优化">热函数应该被优化</h3>
-<p>Hot functions that run faster but also consume less memory cause GC to run less often. V8 provides some helpful debugging tools to spot non-optimized functions or deoptimized functions.</p>
-<p>Avoid polymorphism for IC’s in hot functions</p>
-<p>Inline Caches (IC) are used to speed up execution of some chunks of code, either by caching object property access obj.key or some simple function.</p>
+<p>Hot functions that run faster but also consume less memory cause GC to run less often. V8 provides some helpful debugging tools to spot non-optimized functions or deoptimized functions.<br>如果热函数消耗更少的内存从而减少GC的频率，这样运行速度更快。 V8提供了一些有用的调试工具，以发现没有优化的函数或非优化的函数。</p>
+<h2 id="避免多态性IC的热函数">避免多态性IC的热函数</h2>
+<p>内部缓存(IC)用于加快执行的一些代码块中，要么通过缓存对象属性访问obj.key或一些简单函数。</p>
 <figure class="highlight javscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">x</span><span class="params">(a, b)</span> <span class="comment">{</span></span></div><div class="line">  return a + b;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="title">x</span><span class="params">(1, 2)</span>; <span class="comment">// monomorphic</span></div><div class="line">x(<span class="number">1</span>, “<span class="keyword">string</span>”); <span class="comment">// polymorphic, level 2</span></div><div class="line">x(<span class="number">3.14</span>, <span class="number">1</span>); <span class="comment">// polymorphic, level 3</span></div></pre></td></tr></table></figure>
 
-<p>When <code>x(a,b)</code> is run for the first time, V8 creates a monomorphic IC. When you call x a second time, V8 erases the old IC and creates a new polymorphic IC which supports both types of operands integer and string. When you call IC the third time, V8 repeats the same procedure and creates another polymorphic IC of level 3.</p>
-<p>However, there is a limitation. After IC level reaches 5 (could be changed with <code>–max_inlining_levels</code> flag) the function becomes megamorphic and is no longer considered optimizable.</p>
-<p>It’s intuitively understandable that monomorphic functions run the fastest and also have a smaller memory footprint.</p>
+<p>当<code>x(a,b)</code>第一次运行时，V8创建了一个单态的内部缓存。当你调用x一秒钟，V8移除老的IC，创建一个新的多态的IC来支持整形和字符串的操作。当你再次调用IC，V8重复以上步骤创建了另一个第三级的多态IC。、</p>
+<p>然而，层级是有限的。在IC的层级达到5级时（可以改变<code>–max_inlining_levels</code>标示），这个函数将成为多态并且不再可被优化的。</p>
+<p>这里直观的理解了单态函数运行速度最快的，也消耗更小的内存占用。</p>
 <h3 id="不要把大对象加入内存">不要把大对象加入内存</h3>
 <p>This one is obvious and well known. If you have large files to process, for example a large CSV file, read it line-by-line and process in little chunks instead of loading the entire file to memory. There are rather rare cases where a single line of csv would be larger than 1mb, thus allowing you to fit it in New Space.</p>
 <h3 id="不要阻塞主服务线程">不要阻塞主服务线程</h3>
