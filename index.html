@@ -55,11 +55,11 @@
     <header>
       
   
-    <h1 class="title"><a href="/2015/10/27/debugging-memory-leaks-node-js-applications/">调试node.js应用的内存泄漏[译]</a></h1>
+    <h1 class="title"><a href="/2015/11/02/debugging-memory-leaks-node-js-applications/">调试node.js应用的内存泄漏[译]</a></h1>
   
 
       
-      <time datetime="2015-10-27T00:52:18.000Z">Oct 27 2015</time>
+      <time datetime="2015-11-02T00:46:52.000Z">Nov 2 2015</time>
       
     </header>
     <div class="entry">
@@ -164,18 +164,18 @@
 <p>然而，层级是有限的。在IC的层级达到5级时（可以改变<code>–max_inlining_levels</code>标示），这个函数将成为多态并且不再可被优化的。</p>
 <p>这里直观的理解了单态函数运行速度最快的，也消耗更小的内存占用。</p>
 <h3 id="不要把大对象加入内存">不要把大对象加入内存</h3>
-<p>This one is obvious and well known. If you have large files to process, for example a large CSV file, read it line-by-line and process in little chunks instead of loading the entire file to memory. There are rather rare cases where a single line of csv would be larger than 1mb, thus allowing you to fit it in New Space.</p>
+<p>这一个是显而易见的，众所周知的。如果具有大的要处理的文件，例如一个大的CSV文件，一行一行的读取并小块处理而不是加载整个文件存储器到内存中。在极少的情况下，CSV单行将超过1MB，才会新分配的空间存放。</p>
 <h3 id="不要阻塞主服务线程">不要阻塞主服务线程</h3>
-<p>If you have some hot API which takes some time to process, such as an API to resize images, move it to a separate thread or turn it into a background job. CPU intensive operations would block main thread forcing all other customers to wait and keep sending requests. Unprocessed request data would stack in memory, thus forcing full GC to take longer time to finish.</p>
+<p>如果你有一些热API需要一些时间来处理，像一个缩放图片的API，单独把它放到一个后台的线程的服务里。CPU密集型操作会阻塞主线程强制所有其他客户等待，保持发送中请求。未处理的请求数据就堆在内存中，从而迫使完整的GC需要更长的时间来完成。</p>
 <h3 id="不要创建不必要的数据">不要创建不必要的数据</h3>
-<p>I once had a weird experience with restify. If you send a few hundred thousand requests to an invalid URL then the application memory would rapidly grow on up to hundred megabytes until a full GC kicks in a few seconds later, which is when everything would go back to normal. Turns out that for each invalid URL, restify generates a new error object which includes long stack traces. This forced newly created objects to be allocated in Large Object Space rather than in New Space.</p>
-<p>Having access to such data could be very helpful during development, but obviously not required on production. Therefore the rule is simple - do not generate data unless you certainly need it.</p>
+<p>我曾经在使用restify有一个奇怪的经历。如果您发送几十万请求无效的URL，那么应用程序的内存将迅速增长就高达百兆字节，直到一个full GC几秒钟后，一切都会恢复正常。原来，为每个无效的URL，restify会生成一个新的错误对象，其中包括长的堆栈跟踪。这迫使新创建的对象被分配在大对象空间里，而不是新生代空间。</p>
+<p>获得这样的数据可以在开发过程中非常有帮助的，但显然生产环境中不需要。因此，规则很简单 - 不生成数据，除非你确实需要它。</p>
 <h3 id="了解你的工具">了解你的工具</h3>
-<p>Last, but certainly not the least, is to know your tools. There are various debuggers, leak cathers, and usage graphs generators. All those tools can help you make your software faster and more efficient.</p>
+<p>最后，但当然不是最不重要的，是要了解你的工具。有各种调试器，泄漏cathers和使用情况的图形生成器。所有这些工具可以有助于你的软件更快，更高效。</p>
 <h3 id="结论">结论</h3>
-<p>Understanding how V8’s garbage collection and code optimizer works is a key to application performance. V8 compiles JavaScript to native assembly and in some cases well written code could achieve performance comparable with GCC compiled applications.</p>
-<p>And in case you are wondering, the new API application for my Toptal client, although there is room for improvement, is working very well!</p>
-<p>Joyent recently released a new version of Node.js which uses one of the latest versions of V8. Some applications written for Node.js v0.12.x may not be compatible with the new v4.x release. However, applications will experience tremendous performance and memory usage improvement within the new version of Node.js.</p>
+<p>理解V8的垃圾回收和代码优化如何工作以及应用性能的关键。V8对JavaScript编译到本地的执行在某些情况下编写的代码实现性能与GCC编译的应用程序相媲美。</p>
+<p>而如果你想知道，我的Toptal客户新的API应用程序，虽然还改进的余地，但是已经工作得非常好了！</p>
+<p>Joyent公司最近发布的Node.js的新版本，它使用的V8引擎是最新版本之一。针对Node.js的v0.12.x写了一些应用程序可能无法与新的4.x版版本兼容。然而，应用程序将在node.js中的新版本出现了巨大的性能和内存使用情况的改善.</p>
 
       
     </div>
