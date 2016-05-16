@@ -59,7 +59,7 @@
   
 
       
-      <time datetime="2016-05-16T00:16:50.000Z">May 16 2016</time>
+      <time datetime="2016-05-16T00:19:49.000Z">May 16 2016</time>
       
     </header>
     <div class="entry">
@@ -82,7 +82,7 @@
 <p>具体的使用还有很多，就不在这个文档里赘述了。</p>
 <h2 id="内容聚合接口">内容聚合接口</h2>
 <p>官方只是提供一个RSS的链接生成器:<a href="https://rss.itunes.apple.com/us/?urlDesc=%2Fgenerator" target="_blank" rel="external">https://rss.itunes.apple.com/us/?urlDesc=%2Fgenerator</a></p>
-<p>&gt;</p>
+<blockquote>
 <ul>
 <li>畅销 App 排名</li>
 <li>畅销 iPad App 排名</li>
@@ -93,6 +93,7 @@
 <li>新的付费应用程序</li>
 <li>新的免费应用程序</li>
 </ul>
+</blockquote>
 <p>如果后缀<code>xml</code>则返回xml的数据，<code>json</code>则返回json数据</p>
 <p>获取的数据还是比较全局，但是只能获取前100个数据。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">http<span class="variable">s:</span>//itunes.apple.<span class="keyword">com</span>/<span class="keyword">cn</span>/rss/topgrossingipadapplications/limit=<span class="number">10</span>/genre=<span class="number">6021</span>/xml</div><div class="line"></div><div class="line">http<span class="variable">s:</span>//itunes.apple.<span class="keyword">com</span>/<span class="keyword">cn</span>/rss/topgrossingipadapplications/limit=<span class="number">10</span>/genre=<span class="number">6021</span>/json</div></pre></td></tr></table></figure>
