@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>uupup！ › archive_b</title>
+  <meta name="author" content="H1bomb">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="uupup！"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="uupup！" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-63097959-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+
+<body>
+  <header id="header"><div class="meta inner">
+  <h1><a href="/">uupup！</a></h1>
+  <h2><a href="/"></a></h2>
+  <nav id="main-nav">
+    <ul>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+</div>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2016</h2>
+
+
+<article class="post">
+  <div class="post-content">
+    <header>
+      
+  
+    <h1 class="title"><a href="/2016/05/16/iTunes-Api-Usage/">iTunes api的使用说明</a></h1>
+  
+
+      
+      <time datetime="2016-05-16T00:16:50.000Z">May 16 2016</time>
+      
+    </header>
+    <div class="entry">
+      
+        <p>最近公司需要跟踪App Store里面应用的舆情，需要获取应用的评论，等其他一些信息。在网上查了下iTunes的接口很少。大体可以分成三种类型：</p>
+<ul>
+<li>搜索接口（官方提供）</li>
+<li>内容聚合接口（官方提供）</li>
+<li>通过抓包获取的iTunes页面内的接口（非官方）</li>
+</ul>
+<p>通过这三种接口，可以大体获取App的一些信息。然后通过定时采集，进行监控和分析。</p>
+<h2 id="搜索接口">搜索接口</h2>
+<p>主要的调用文档：<a href="https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/" target="_blank" rel="external">点击这里</a></p>
+<p>如：</p>
+<blockquote>
+<p>可以通过关键字获取iTunes里面所有的内容</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http<span class="variable">s:</span>//itunes.apple.<span class="keyword">com</span>/<span class="built_in">search</span>?term=jack+johnson</div></pre></td></tr></table></figure>
+
+<p>具体的使用还有很多，就不在这个文档里赘述了。</p>
+<h2 id="内容聚合接口">内容聚合接口</h2>
+<p>官方只是提供一个RSS的链接生成器:<a href="https://rss.itunes.apple.com/us/?urlDesc=%2Fgenerator" target="_blank" rel="external">https://rss.itunes.apple.com/us/?urlDesc=%2Fgenerator</a></p>
+<p>&gt;</p>
+<ul>
+<li>畅销 App 排名</li>
+<li>畅销 iPad App 排名</li>
+<li>付费 iPad App 排名</li>
+<li>免费 App 排名</li>
+<li>免费 iPad App 排名</li>
+<li>收费 App 排名</li>
+<li>新的付费应用程序</li>
+<li>新的免费应用程序</li>
+</ul>
+<p>如果后缀<code>xml</code>则返回xml的数据，<code>json</code>则返回json数据</p>
+<p>获取的数据还是比较全局，但是只能获取前100个数据。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">http<span class="variable">s:</span>//itunes.apple.<span class="keyword">com</span>/<span class="keyword">cn</span>/rss/topgrossingipadapplications/limit=<span class="number">10</span>/genre=<span class="number">6021</span>/xml</div><div class="line"></div><div class="line">http<span class="variable">s:</span>//itunes.apple.<span class="keyword">com</span>/<span class="keyword">cn</span>/rss/topgrossingipadapplications/limit=<span class="number">10</span>/genre=<span class="number">6021</span>/json</div></pre></td></tr></table></figure>
+
+<p>但是除了RSS生成器里面生成的链接以外还有其他RSS订阅：</p>
+<p>评论接口：<br>通过这个接口可以获取前500个评论</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http<span class="variable">s:</span>//itunes.apple.<span class="keyword">com</span>/<span class="keyword">cn</span>/rss/customerreviews/page=<span class="number">1</span>/id=<span class="number">490655927</span>/sortby=mostrecent/json</div></pre></td></tr></table></figure>
+
+<h2 id="iTunes应用的内部接口">iTunes应用的内部接口</h2>
+<p>以上是官方提供的接口，如果无法满足获取信息的需求，那只能Hack iTunes应用的接口了，可以通过抓包工具来获取。</p>
+<p>以Charles为例子：</p>
+<p>因为iTunes的接口为https的，所以需要配置https的Charles的证书</p>
+<p>具体的操作可以参考：<a href="http://www.charlesproxy.com/documentation/proxying/ssl-proxying/" target="_blank" rel="external">http://www.charlesproxy.com/documentation/proxying/ssl-proxying/</a></p>
+<p>这次主要是抓取了评论接口：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://itunes.apple.com/WebObjects/MZStore.woa/wa/userReviewsRow?<span class="variable">id=</span><span class="number">490655927</span>&<span class="variable">displayable-kind=</span><span class="number">11</span>&<span class="variable">startIndex=</span><span class="number">0</span>&<span class="variable">endIndex=</span><span class="number">100</span>&<span class="variable">sort=</span><span class="number">1</span>&<span class="variable">appVersion=</span>current</div></pre></td></tr></table></figure>
+
+<p>通过这个方式可以获取应用的所有评论，当然也可以获取其他的信息。</p>
+<p>在使用这个接口的时候：httpt头必须要带上cookies信息和use-agentx信息。</p>
+<p>否则会展示一个跳转iTunes应用的页面。</p>
+
+      
+    </div>
+    
+      
+    
+  </div>
+</article>
+
+
+
+
+<div class="pagination">
+  <table width='100%'>
+    <tbody>
+    <tr>
+      <td width='120' align='left'>
+        
+      </td>
+      <td width='auto' align='center'>
+          <a href="/archives/">文章归档</a>
+      </td>
+      <td width='120' align='right'>
+        
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+</div></div>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer"><div class="inner"><div class="alignleft">
+  <p>
+  
+    &copy; 2016 H1bomb
+  
+  </p>
+  <p>
+    <a href="http://github.com/willerce/hexo-theme-noderce">Noderce</a> Theme By <a href="http://willerce.com" >willerce</a>
+  </p>
+
+</div>
+<div class="clearfix"></div></div></footer>
+  <script type="text/javascript">
+
+</script>
+
+</body>
+</html>

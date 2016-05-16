@@ -55,6 +55,72 @@
     <header>
       
   
+    <h1 class="title"><a href="/2015/08/30/Promise-Patterns/">promise设计模式</a></h1>
+  
+
+      
+      <time datetime="2015-08-30T15:48:38.000Z">Aug 30 2015</time>
+      
+    </header>
+    <div class="entry">
+      
+        <p>promise是为了解决Javascript的异步编程导致的‘callback hell’而存在的。</p>
+<p>目前有多种设计方式，比较知名的如：promise/deferred（jquery就使用了这个方式）,<br>promise/a+（是es6 promise规范）。</p>
+<p>当然我们还是希望使用原生的Promise对象，先看下浏览器的支持度：</p>
+<iframe src="http://caniuse.com/promises/embed/agents=desktop" width="100%" height="350px"></iframe>
+
+<p>可见IE还是重灾区，firefox和chrome很早就已经实现了原生的promise了。当然如果要使用promise，已有不少第三方库的支持，如jquery，Q，Bluebird，Thenjs…<br>还是比较多的实现，同时值得一提的是推荐使用polyfill的方式来解决，如 <a href="https://github.com/jakearchibald/es6-promise" target="_blank" rel="external">es6-promise</a>,或者使用<a href="https://babeljs.io/" target="_blank" rel="external">Babel</a>进行es6编译转化也是可以的。</p>
+<p>先用一个图说明下什么原理：</p>
+<p><img src="https://mdn.mozillademos.org/files/8633/promises.png" alt="promise 原理图"></p>
+<p>看上去很复杂，其实就是(三个状态的流转)：</p>
+<p><img src="http://liubin.github.io/promises-book/Ch1_WhatsPromises/img/promise-states.png" alt="promise 简单图"></p>
+<p>分别对应流转，有两个预定义处理句柄：</p>
+<p><img src="http://liubin.github.io/promises-book/Ch1_WhatsPromises/img/promise-onFulfilled_onRejected.png" alt="Promise 处理图"></p>
+<p>以下摘自MDN的Promise/A+规范说明</p>
+<blockquote>
+<h2 id="属性">属性</h2>
+<h3 id="Promise-length">Promise.length</h3>
+<p>长度属性，其值为 1 (构造器参数的数目).</p>
+<h3 id="Promise-prototype">Promise.prototype</h3>
+<p>表示 Promise 构造器的原型.</p>
+<h2 id="方法">方法</h2>
+<h3 id="Promise-all(iterable)">Promise.all(iterable)</h3>
+<p>返回一个promise，当iterable参数里所有的promise都被解决后，该promise也会被解决。</p>
+<h3 id="Promise-race(iterable)">Promise.race(iterable)</h3>
+<p>返回一个Promise，当iterable参数里的任意一个子Promise被接受或拒绝后，该promise马上也会用子Promise的成功值或失败原因被接受或拒绝。</p>
+<h3 id="Promise-reject(reason)">Promise.reject(reason)</h3>
+<p>用失败原因reason拒绝一个Promise对象。<br>Promise.resolve(value)<br>用成功值value解决一个Promise对象。如果该value为可继续的（thenable，即带有then方法），返回的Promise对象会“跟随”这个value，采用这个value的最终状态；否则的话返回值会用这个value满足（fullfil）返回的Promise对象。</p>
+<h2 id="Promise原型">Promise原型</h2>
+<h3 id="属性-1">属性</h3>
+<h3 id="Promise-prototype-constructor">Promise.prototype.constructor</h3>
+<p>返回创建了实例原型的函数.  默认为 Promise 函数.</p>
+<h2 id="方法-1">方法</h2>
+<h3 id="Promise-prototype-catch(onRejected)">Promise.prototype.catch(onRejected)</h3>
+<p>添加一个否定(rejection) 回调到当前 promise, 返回一个新的promise。如果这个回调被调用，新 promise 将以它的返回值来resolve，否则如果当前promise 进入fulfilled状态，则以当前promise的肯定结果作为新promise的肯定结果.</p>
+<h3 id="Promise-prototype-then(onFulfilled,_onRejected)">Promise.prototype.then(onFulfilled, onRejected)</h3>
+<p>添加肯定和否定回调到当前 promise, 返回一个新的 promise, 将以回调的返回值 来resolve.</p>
+</blockquote>
+<p>示范代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">asyncFunction</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Promise(<span class="function"><span class="keyword">function</span> <span class="params">(resolve, reject)</span> </span>{</div><div class="line">        setTimeout(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line">            resolve(<span class="string">'Async Hello world'</span>);</div><div class="line">        }, <span class="number">16</span>);</div><div class="line">    });</div><div class="line">}</div><div class="line"></div><div class="line">asyncFunction().then(<span class="function"><span class="keyword">function</span> <span class="params">(value)</span> </span>{</div><div class="line">    <span class="built_in">console</span>.log(value);    <span class="comment">// =&gt; 'Async Hello world'</span></div><div class="line">}).catch(<span class="function"><span class="keyword">function</span> <span class="params">(error)</span> </span>{</div><div class="line">    <span class="built_in">console</span>.log(error);</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>后面再写下在具体开发中如何使用Promise。</p>
+
+      
+    </div>
+    
+      
+    
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  <div class="post-content">
+    <header>
+      
+  
     <h1 class="title"><a href="/2015/08/30/CNUTcon-Participants-Experience/">CNUTCon的参会体验</a></h1>
   
 
@@ -388,7 +454,7 @@
   <footer id="footer"><div class="inner"><div class="alignleft">
   <p>
   
-    &copy; 2015 H1bomb
+    &copy; 2016 H1bomb
   
   </p>
   <p>
